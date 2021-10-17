@@ -8,7 +8,6 @@ import random as r
 import mouse as m
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time as t
 from itertools import cycle
 #some vars for later:
 cv0, cv1, cv2, cv3, cv4, cv5, cv6, cv7, cv8, z, vector, X, Y, thecolor, a1, a2, b1, b2, handler = 0,0,0,0,0,0,0,0,0,1,0,0,0,None, None, None, None, None, None
