@@ -1,4 +1,5 @@
-# susbot for pixelplace.io, made by deviousname, probably best if you use Python 3.7.9 or the imposter jump out of a vent and get you
+# susbot for pixelplace.io, made by deviousname, it is probably best if you use Python 3.7.9 or the imposter will jump out of a vent and get you.
+https://www.python.org/downloads/release/python-379/
 
 susbot works by opening an automated browser window and loging in through reddit to bypass the CAPTCHA system of pixelplace.io
 if you do not have a reddit account, you will need one in order to use susbot, otherwise you will need to rewrite the code to suit your non-reddit needs
