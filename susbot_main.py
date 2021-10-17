@@ -31,7 +31,7 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     brown1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[15]
     brown2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[16]
     brown3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[17]
-    red1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[18]
+    red1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[18] 
     red2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[19]
     red3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[20]
     brown4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[22]
