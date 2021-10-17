@@ -11,6 +11,7 @@ from selenium.webdriver.common.by import By
 from itertools import cycle
 #some vars for later:
 cv0, cv1, cv2, cv3, cv4, cv5, cv6, cv7, cv8, z, vector, X, Y, thecolor, a1, a2, b1, b2, handler = 0,0,0,0,0,0,0,0,0,1,0,0,0,None, None, None, None, None, None
+tX,bX, tY,bY=None, None, None, None
 def reload_colors(): #in order for you to switch colors easily, these needed to be loaded properly
     global white,grey1,grey2,grey3,grey4,black,green1,green2,green3,green5,yellow1,yellow2,yellow3,yellow4,brown1,brown2,brown3,red1,red2,red3,brown4,peach1,peach2,peach3,pink1,pink2,pink3,pink4,blue1,blue2,blue3,blue4,blue5,blue6,blue7
     white = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[0]
