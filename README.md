@@ -2,12 +2,15 @@
 https://www.python.org/downloads/release/python-379/
 
 -susbot works by opening an automated browser window and logging in through Reddit to bypass the CAPTCHA system of pixelplace.io-
+
 If you do not have a Reddit account, you will need one in order to use susbot, otherwise you will need to rewrite the code to suit your non-Reddit needs.
 
 If you use Chrome, you need to find the matching chromedriver.exe
+
 chromedriver can be found here:  https://chromedriver.chromium.org/downloads
 
 Firefox users should work too, and they will need to get their corresponding Firefox (geckodriver) driver.
+
 Firefox drivers can be found here: https://github.com/mozilla/geckodriver/releases
 
 Once you have the driver, simply copy and paste it into the same folder as susbot.
@@ -15,7 +18,9 @@ Once you have the driver, simply copy and paste it into the same folder as susbo
 Set your Reddit name and password in crewmate.py and then run susbotmain.py
 
 Note: while it is logging in don't click around or do anything, just wait for pixeplace.io to fully load in, and then you can use it.
+
 Additional Note: if you switch maps in the main tab, you need to reload the colors by holding down "j" for a moment.
+
 Premium colors have not been included into the public version of susbot, you can add them yourself by following the format of the other colors.
 
 Final note: I'm lazy. Have a wonderful day.
