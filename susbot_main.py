@@ -1,5 +1,5 @@
 #made by deviousname, someone better than me can clean this code up and improve upon it
-#feel free to change it to suit your needs *you do not have permission to sell any code derived from this code*
+#feel free to change it to suit your needs *you do not have permission to sell any code derived from this code: GNU Affero General Public License v3.0
 import crewmate #this first import is where you store your username and password to login to Reddit(required), found in: crewmate.py
 import pyautogui as p
 import keyboard as k
