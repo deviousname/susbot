@@ -1,5 +1,5 @@
 # susbot for pixelplace.io, made by deviousname
-#it is probably best if you use Python 3.7.9 or the imposter will jump out of a vent and get you
+It is probably best if you use Python 3.7.9 or the imposter will jump out of a vent and get you:
 https://www.python.org/downloads/release/python-379/
 
 -susbot works by opening an automated browser window and logging in through Reddit to bypass the CAPTCHA system of pixelplace.io-
