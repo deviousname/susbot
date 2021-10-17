@@ -28,4 +28,8 @@ Additional Note: if you switch maps in the main tab, you need to reload the colo
 
 Premium colors have not been included into the public version of susbot, you can add them yourself by following the format of the other colors.
 
-Final note: I'm lazy. Have a wonderful day.
+Final note: all the imports need to be installed, if you don't know how to do that, I reccomend looking up how pip install for Windows 10 Python 3.7.9 which is what I use.
+
+For example to install pyautogui you open your command prompt and type: pip install pyautogui
+
+Different system setups may have different syntax, good luck!
