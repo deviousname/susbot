@@ -33,3 +33,16 @@ Final note: all the imports need to be installed, if you don't know how to do th
 For example to install pyautogui you open your command prompt and type: pip install pyautogui
 
 Different system setups may have different syntax, good luck!
+
+The full list of imports you need to install are:
+
+pyautogui
+(https://pyautogui.readthedocs.io/en/latest/)
+keyboard
+(https://pypi.org/project/keyboard/)
+mouse
+(https://pypi.org/project/mouse/)
+selenium
+(https://selenium-python.readthedocs.io/)
+itertools
+(https://docs.python.org/3/library/itertools.html)
