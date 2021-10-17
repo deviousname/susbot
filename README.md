@@ -16,7 +16,7 @@ Firefox users should work too, and they will need to get their corresponding Fir
 
 Firefox drivers can be found here: https://github.com/mozilla/geckodriver/releases
 
-Also read this comment to set the driver in the code: https://github.com/deviousname/susbot/blob/be712780379d2fb0215220c59d3cbf306317b7c5/susbot_main.py#L52
+Also read this comment to set the driver in the code if you are using Firefox: https://github.com/deviousname/susbot/blob/be712780379d2fb0215220c59d3cbf306317b7c5/susbot_main.py#L52
 
 Once you have the driver, simply copy and paste it into the same folder as susbot.
 
