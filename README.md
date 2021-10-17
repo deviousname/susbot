@@ -24,11 +24,9 @@ Set your Reddit name and password in crewmate.py and then run susbotmain.py
 
 Note: while it is logging in don't click around or do anything, just wait for pixeplace.io to fully load in, and then you can use it.
 
-Additional Note: if you switch maps in the main tab, you need to reload the colors by holding down "j" for a moment.
+If you switch maps in the main tab, you need to reload the colors by holding down "j" for a moment.
 
-Premium colors have not been included into the public version of susbot, you can add them yourself by following the format of the other colors.
-
-Final note: all the imports need to be installed, if you don't know how to do that, I reccomend looking up how pip install for Windows 10 Python 3.7.9 which is what I use.
+IMPORTANT: All the imports need to be installed, if you don't know how to do that, I reccomend looking up how pip install for Windows 10 Python 3.7.9 which is what I use.
 
 For example to install pyautogui you open your command prompt and type: pip install pyautogui
 
