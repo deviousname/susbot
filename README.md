@@ -8,7 +8,7 @@ https://www.python.org/downloads/release/python-379/
 
 If you do not have a Reddit account, you will need one in order to use susbot, otherwise you will need to rewrite the code to suit your non-Reddit needs.
 
-If you use Chrome, you need to find the matching chromedriver.exe
+If you use Chrome, you need to find the matching chromedriver.exe (I included the latest chromedriver.exe)
 
 chromedriver can be found here:  https://chromedriver.chromium.org/downloads
 
