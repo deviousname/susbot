@@ -8,10 +8,12 @@ import random as r
 import mouse as m
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import time as t
 from itertools import cycle
 #some vars for later:
-cv0, cv1, cv2, cv3, cv4, cv5, cv6, cv7, cv8, z, vector, X, Y, thecolor, a1, a2, b1, b2, handler = 0,0,0,0,0,0,0,0,0,1,0,0,0,None, None, None, None, None, None
-tX,bX, tY,bY=None, None, None, None
+z, vector = 1, 0
+thecolor, handler = None, None
+tX, bX, tY, bY = None, None, None, None
 def reload_colors(): #in order for you to switch colors easily, these needed to be loaded properly
     global white,grey1,grey2,grey3,grey4,black,green1,green2,green3,green5,yellow1,yellow2,yellow3,yellow4,brown1,brown2,brown3,red1,red2,red3,brown4,peach1,peach2,peach3,pink1,pink2,pink3,pink4,blue1,blue2,blue3,blue4,blue5,blue6,blue7
     white = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[0]
@@ -67,213 +69,68 @@ print ('E: Draw an Among Us character, make sure your zoom level is 1 on pixelpl
 print ('For random drawing, press Y on the top left of your zone, and U on the bottom left then use either R to draw random trees or K to draw random Among Us characters.')
 print ('J: hold J to stop drawing random trees or Among Us characters.')
 print ('ESC: hold Escape to halt the script.')
+chatbox = driver.find_element_by_name('chat')
 #setting up the colors for fast color switching:
-reload_colors();colors = [white,grey1,grey2,grey3,grey4,black,green1,green2,
+reload_colors() #load the colors
+colors_all = [white,grey1,grey2,grey3,grey4,black,green1,green2,
     green3,green5,yellow1,yellow2,yellow3,yellow4,
     brown1,brown2,brown3,red1,red2,red3,brown4,peach1,
     peach2,peach3,pink1,pink2,pink3,pink4,
-    blue1,blue2,blue3,blue4,blue5,blue6,blue7];colors_cycle = cycle(colors)
-def next_color(): #fast color switching
+    blue1,blue2,blue3,blue4,blue5,blue6,blue7]
+colors_cycle8 = cycle(colors_all)
+def whichcolor8(): # All colors
     global thecolor
-    thecolor = next(colors_cycle)
-    thecolor.click()        
-def whichcolor8(): #all colors
-    global cv8, thecolor
-    if cv8 > 38:
-        cv8 = 0
-    if cv8 == 1:
-        thecolor = white
-    elif cv8 == 2:
-        thecolor = grey1
-    elif cv8 == 3:
-        thecolor = grey2
-    elif cv8 == 4:
-        thecolor = grey3
-    elif cv8 == 5:
-        thecolor = grey4
-    elif cv8 == 6:
-        thecolor = black
-    elif cv8 == 7:
-        thecolor = green1
-    elif cv8 == 8:
-        thecolor = green2
-    elif cv8 == 9:
-        thecolor = green3
-    elif cv8 == 10:
-        thecolor = green5
-    elif cv8 == 11:
-        thecolor = yellow1
-    elif cv8 == 12:
-        thecolor = yellow2
-    elif cv8 == 13:
-        thecolor = yellow3
-    elif cv8 == 14:
-        thecolor = yellow4
-    elif cv8 == 15:
-        thecolor = brown1
-    elif cv8 == 16:
-        thecolor = brown2
-    elif cv8 == 17:
-        thecolor = brown3
-    elif cv8 == 18:
-        thecolor = red1
-    elif cv8 == 19:
-        thecolor = red2
-    elif cv8 == 20:
-        thecolor = red3
-    elif cv8 == 21:
-        thecolor = brown4
-    elif cv8 == 22:
-        thecolor = peach1
-    elif cv8 == 23:
-        thecolor = peach2
-    elif cv8 == 24:
-        thecolor = peach3
-    elif cv8 == 25:
-        thecolor = pink1
-    elif cv8 == 26:
-        thecolor = pink2
-    elif cv8 == 27:
-        thecolor = pink3
-    elif cv8 == 28:
-        thecolor = pink4
-    elif cv8 == 29:
-        thecolor = blue1
-    elif cv8 == 30:
-        thecolor = blue2
-    elif cv8 == 31:
-        thecolor = blue3
-    elif cv8 == 32:
-        thecolor = blue4
-    elif cv8 == 33:
-        thecolor = blue5
-    elif cv8 == 34:
-        thecolor = blue6
-    elif cv8 == 35:
-        thecolor = blue7
-    cv8 += 1
+    thecolor = next(colors_cycle8)
+    thecolor.click()    
+color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7]
+colors_cycle7 = cycle(color7) # Blue colors
+def whichcolor7():
+    global thecolor
+    thecolor = next(colors_cycle7)
     thecolor.click()
-#these palettes are just smaller versions of whichcolor8(), feel free to change the colors to suit your needs, make sure to use the correct names though, example: thecolor = pink3
-def whichcolor7(): # Blue colors, normally bound to S + A, rebind in control section further down
-    global thecolor, cv7
-    if cv7 > 7:
-        cv7 = 0
-    cv7 += 1
-    if cv7 <= 1:
-        thecolor = blue1
-    elif cv7 == 2:
-        thecolor = blue2
-    elif cv7 == 3:
-        thecolor = blue3
-    elif cv7 == 4:
-        thecolor = blue4
-    elif cv7 == 5:
-        thecolor = blue5
-    elif cv7 == 6:
-        thecolor = blue6
-    elif cv7 == 7:
-        thecolor = blue7
-    thecolor.click()
-def whichcolor6(): # black and white, S + D, rebind in control section further down
-    global thecolor, cv6
-    if cv6 > 2:
-        cv6 = 0
-    cv6 += 1
-    if cv6 <= 1:
-        thecolor = black
-    elif cv6 == 2:
-        thecolor = white
-    thecolor.click()
-def whichcolor5(): # tree trunk colors; D, rebind in control section further down
-    global thecolor, cv5
-    if cv5 > 7:
-        cv5 = 0
-    cv5 += 1
-    if cv5 <= 1:
-        thecolor = brown1
-    elif cv5 == 2:
-        thecolor = brown2
-    elif cv5 == 3:
-        thecolor = brown3
-    elif cv5 == 4:
-        thecolor = brown4
-    elif cv5 == 5:
-        thecolor = grey4
-    elif cv5 == 6:
-        thecolor = peach3
-    elif cv5 == 7:
-        thecolor = white
-    thecolor.click()
-def whichcolor4(): # dirt colors, W + D, rebind in control section further down
-    global thecolor, cv4
-    if cv4 > 4:
-        cv4 = 0
-    cv4 += 1
-    if cv4 <= 1:
-        thecolor = brown1
-    elif cv4 == 2:
-        thecolor = brown2
-    elif cv4 == 3:
-        thecolor = brown3
-    elif cv4 == 4:
-        thecolor = brown4
-    thecolor.click()         
-def whichcolor3(): # grey colors, W, rebind in control section further down
-    global thecolor, cv3
-    if cv3 > 4:
-        cv3 = 0
-    cv3 += 1
-    if cv3 == 1:
-        thecolor = grey4
-    elif cv3 == 2:
-        thecolor = grey3
-    elif cv7 == 3:
-        thecolor = grey2
-    elif cv3 == 4:
-        thecolor = grey1
-    thecolor.click()
-def whichcolor2(): # yellow colors, A + W, rebind in control section further down
-    global thecolor, cv2
-    if cv2 > 4:
-        cv2 = 0
-    cv2 += 1
-    if cv2 <= 1:
-        thecolor = yellow1
-    elif cv2 == 2:
-        thecolor = yellow2
-    elif cv2 == 3:
-        thecolor = yellow3
-    elif cv2 == 4:
-        thecolor = yellow4
-    thecolor.click()
-def whichcolor1(): # green colors, S + A, rebind in control section further down
-    global thecolor, cv1
-    if cv1 > 4:
-        cv1 = 0
-    cv1 += 1
-    if cv1 <= 1:
-        thecolor = green1
-    elif cv1 == 2:
-        thecolor = green2
-    elif cv1 == 3:
-        thecolor = green3
-    elif cv1 == 4:
-        thecolor = green5
-    thecolor.click()
-def whichcolor0(): # red colors, S, rebind in control section further down    
-    global thecolor, cv0
-    if cv0 > 3:
-        cv0 = 0
-    cv0 += 1
-    if cv0 <= 1:
-        thecolor = red1
-    elif cv0 == 2:
-        thecolor = red2
-    elif cv0 == 3:
-        thecolor = red3
-    thecolor.click()
-def rainbowbrush(): #this is how the keycombos work, for example if you press A and W it will run whichcolor2() aka the yellow colors
-    global colorvector
+color6 = [black, white]
+colors_cycle6 = cycle(color6)
+def whichcolor6(): # Black and white
+    global thecolor
+    thecolor = next(colors_cycle6)
+    thecolor.click()    
+color5 = [brown1, brown2, brown3, brown4, grey4, peach3, white]
+colors_cycle5 = cycle(color5)
+def whichcolor5(): # Tree trunk colors
+    global thecolor
+    thecolor = next(colors_cycle5)
+    thecolor.click()    
+color4 = [brown1, brown2, brown3, brown4]
+colors_cycle4 = cycle(color4)
+def whichcolor4(): # Brown colors
+    global thecolor
+    thecolor = next(colors_cycle4)
+    thecolor.click()    
+color3 = [grey4, grey3, grey2, grey1]
+colors_cycle3 = cycle(color3)
+def whichcolor3(): # Grey colors
+    global thecolor
+    thecolor = next(colors_cycle3)
+    thecolor.click()    
+color2 = [yellow1, yellow2, yellow3, yellow4]
+colors_cycle2 = cycle(color2)
+def whichcolor2(): # Yellow colors
+    global thecolor
+    thecolor = next(colors_cycle2)
+    thecolor.click()    
+color1 = [green1, green2, green3, green5]
+colors_cycle1 = cycle(color1)
+def whichcolor1(): # Green colors
+    global thecolor
+    thecolor = next(colors_cycle1)
+    thecolor.click()    
+color0 = [red1, red2, red3]
+colors_cycle0 = cycle(color0)
+def whichcolor0(): # Red colors
+    global thecolor
+    thecolor = next(colors_cycle0)
+    thecolor.click()    
+def rainbowbrush(): #this is how the key combos work, for example if you press A and W it will run whichcolor2() aka the yellow colors
     if k.is_pressed("s") == True or k.is_pressed("a") == True or k.is_pressed("w") == True or k.is_pressed("d") == True:        
         #only A
         if k.is_pressed("a") == True and k.is_pressed("s") != True and k.is_pressed("w") != True and k.is_pressed("d") != True:
@@ -299,10 +156,10 @@ def rainbowbrush(): #this is how the keycombos work, for example if you press A 
         #only SA
         if k.is_pressed("s") == True and k.is_pressed("a") == True and k.is_pressed("d") != True and k.is_pressed("w") != True:
             whichcolor7()            
-def vectoring(): #for us in direction of trees and among us characters, among other things
-    global X, Y, vector #note: not using small xy; using big XY
+def vectoring(): #for use in direction of trees, among other things
+    global vector
     vector += 1
-    if vector >= 4:
+    if vector > 4:
         vector = 0        
 def colorshift(): # this function is still a work in progress and you can set it in the controls, tree leafs are a good use for this, it paints the next color on the list after checking which color is under your mouse cursor
     global thecolor, pixy, z, x, y, vector    
@@ -429,7 +286,7 @@ def tree_2(): #palm tree
     p.moveTo(x-z,y-2)
     p.moveTo(x+z,y-2)
     k.release('space')
-    z = -z #invert z so the next tree faces the opposite direction
+    z = -z #invert z so the next tree faces the opposite direction   
 def tree_1(): #normal style tree that using every color for the leaves based on colorshift()
     global z, x, y, vector, thecolor
     vectoring()
@@ -489,18 +346,18 @@ def mongus(): #everyones favorite, draw an among us character, facing either lef
     p.moveTo(x-z,y)
     p.moveTo(x-z,y)
     k.release('space')
-    z = -z #next amongus will face other direction if you invert z
+    z = -z #next amongus will face other direction if you invert z 
 ### Controls Section ###
 def mouse_handler(event):
-    global x, y, z, tX, tY, bX, bY, a1, a2, handler, cx1, cx2, b1, b2, coords
+    global x, y, z, tX, tY, bX, bY, handler, pixx, pixx2
     x, y = p.position()
     #this code is how to set your own hotkeys:
     if k.is_pressed("j"):  #set the hotkey like this. Note: use reload_colors() if you have changed pages before drawing again (doesnt work on different tabs)
         reload_colors()    #and the function you want it to run when you press the key
     #and the rest of the controls (add your own to this list if you want)
     if k.is_pressed("q"):
-        next_color()        
-    if k.is_pressed("e"): #draws an amongus character where your mouse is, make sure your zoom is at 1 or it will not scale properly
+        whichcolor8()
+    if k.is_pressed("e"):
         mongus()
     if k.is_pressed("w") == True or k.is_pressed("a") == True or k.is_pressed("s") == True or k.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
         rainbowbrush()
@@ -529,7 +386,7 @@ def mouse_handler(event):
             else:                
                 pass                
             if k.is_pressed("j"):#hold down on J to end the random drawing
-                break            
+                break        
     if k.is_pressed("k"):#random amongus, make sure your zoom is at 1 or won't scale correctly
         while True:
             if r.random() > 0.5:
