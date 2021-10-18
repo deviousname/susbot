@@ -8,14 +8,36 @@ import random as r
 import mouse as m
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time as t
 from itertools import cycle
+driver = webdriver.Chrome() #you need chromedriver.exe: https://chromedriver.chromium.org/downloads
+
 #some vars for later:
 z, vector = 1, 0
 thecolor, handler = None, None
-tX, bX, tY, bY = None, None, None, None
+tX, bX, tY, bY = None, None, None, None  
+
+#login sequence, using Reddit, set your username and pass for Reddit in crewmate.py's variables 'username' and 'password'
+print ('Logging in now through Reddit. If you get an error you may need to set your name and password in crewmate.py')
+driver.get("https://pixelplace.io/api/sso.php?type=2&action=login")
+driver.find_element_by_id('loginUsername').send_keys(crewmate.username)
+driver.find_element_by_id('loginPassword').send_keys(crewmate.password)
+driver.find_elements_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4].click()
+t.sleep(7)#adjust this sleep in seconds if logging after sending name/pass is slow for you
+driver.find_elements_by_xpath('/html/body/div[3]/div/div[2]/form/div/input')[0].click()
+print ('All done logging in, ready to paint.')
+#end login
+
+print ('-Controls-')
+print ('Q: Cycle through all colors.')
+print ('WASD: cycles different color palletes depending on which combination you use, for example W + A is yellows.')
+print ('E: Draw an Among Us character, make sure your zoom level is 1 on pixelplace. Note: it only works when you are moving your mouse cursor slighty when you press it.')
+print ('For random drawing, press Y on the top left of your zone, and U on the bottom left then use either R to draw random trees or K to draw random Among Us characters.')
+print ('J: hold J to stop drawing random trees or Among Us characters.')
+print ('ESC: hold Escape to halt the script.')
+
+#setting up the colors for fast color switching:
 def reload_colors(): #in order for you to switch colors easily, these needed to be loaded properly
-    global white,grey1,grey2,grey3,grey4,black,green1,green2,green3,green5,yellow1,yellow2,yellow3,yellow4,brown1,brown2,brown3,red1,red2,red3,brown4,peach1,peach2,peach3,pink1,pink2,pink3,pink4,blue1,blue2,blue3,blue4,blue5,blue6,blue7
+    global white,grey1,grey2,grey3,grey4,black,green1,green2,green3,green5,yellow1,yellow2,yellow3,yellow4,brown1,brown2,brown3,red1,red2,red3,brown4,peach1,peach2,peach3,pink1,pink2,pink3,pink4,blue1,blue2,blue3,blue4,blue5,blue6,blue7, colors_all, color0,  color1, color2, color3, color4, color5, color6, color7, colors_cycle0, colors_cycle1, colors_cycle2, colors_cycle3, colors_cycle4, colors_cycle5, colors_cycle6, colors_cycle7, colors_cycle8
     white = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[0]
     grey1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[1]
     grey2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[2]
@@ -51,85 +73,77 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     blue5 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[35]
     blue6 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[36]
     blue7 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[37]    
-#if you don't use Chrome and you use Firefox instead, change this to "driver = webdriver.Firefox()" You will also need to download firefox webdriver and keep in same folder as this script
-driver = webdriver.Chrome() #you need chromedriver.exe in same folder and it needs to match the version of you Chrome you use: https://chromedriver.chromium.org/downloads
-#login sequence, using Reddit, set your username and pass for Reddit in crewmate.py's variables 'username' and 'password'
-print ('Logging in now through Reddit. If you get an error you may need to set your name and password in crewmate.py')
-driver.get("https://www.reddit.com/login/?dest=https%3A%2F%2Fssl.reddit.com%2Fapi%2Fv1%2Fauthorize%3Fclient_id%3D5QBfS3MRclJUGQ%26redirect_uri%3Dhttps%253A%252F%252Fpixelplace.io%252Fapi%252Fsso.php%253Ftype%253D2%26response_type%3Dcode%26scope%3Didentity%26state%3Do8xod0a799lzqp9n80u8zdevoxuslyzc%26duration%3Dtemporary")
-r0 = driver.find_element_by_id('loginUsername');r0.send_keys(crewmate.username)
-r1 = driver.find_element_by_id('loginPassword');r1.send_keys(crewmate.password)
-r3 = driver.find_elements_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4];r3.click();t.sleep(3)#change delay "t.sleep(3)" to suit your computer load speed
-r4 = driver.find_elements_by_xpath('/html/body/div[3]/div/div[2]/form/div/input')[0];r4.click();t.sleep(2)#change delay "t.sleep(2)" to suit your computer load speed
-#end login
-print ('All done logging in, ready to paint.')
-print ('-Controls-')
-print ('Q: Cycle through all colors.')
-print ('WASD: cycles different color palletes depending on which combination you use, for example W + A is yellows.')
-print ('E: Draw an Among Us character, make sure your zoom level is 1 on pixelplace. Note: it only works when you are moving your mouse cursor slighty when you press it.')
-print ('For random drawing, press Y on the top left of your zone, and U on the bottom left then use either R to draw random trees or K to draw random Among Us characters.')
-print ('J: hold J to stop drawing random trees or Among Us characters.')
-print ('ESC: hold Escape to halt the script.')
-chatbox = driver.find_element_by_name('chat')
-#setting up the colors for fast color switching:
-reload_colors() #load the colors
-colors_all = [white,grey1,grey2,grey3,grey4,black,green1,green2,
-    green3,green5,yellow1,yellow2,yellow3,yellow4,
-    brown1,brown2,brown3,red1,red2,red3,brown4,peach1,
-    peach2,peach3,pink1,pink2,pink3,pink4,
-    blue1,blue2,blue3,blue4,blue5,blue6,blue7]
-colors_cycle8 = cycle(colors_all)
+    color8 = [white,grey1,grey2,grey3,grey4,black,green1,green2,
+        green3,green5,yellow1,yellow2,yellow3,yellow4,
+        brown1,brown2,brown3,red1,red2,red3,brown4,peach1,
+        peach2,peach3,pink1,pink2,pink3,pink4,
+        blue1,blue2,blue3,blue4,blue5,blue6,blue7]
+    #if you want to add colors to your WASD palette, add the colors into the lists below: 
+    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7]
+    color6 = [black, white]
+    color5 = [brown1, brown2, brown3, brown4, grey4, peach3, white]
+    color4 = [brown1, brown2, brown3, brown4]
+    color3 = [grey4, grey3, grey2, grey1]
+    color2 = [yellow1, yellow2, yellow3, yellow4]
+    color1 = [green1, green2, green3, green5]
+    color0 = [red1, red2, red3]
+    #the list above is linked to the whichcolor() functions further below
+    colors_cycle8 = cycle(color8)
+    colors_cycle7 = cycle(color7) # Blue colors
+    colors_cycle6 = cycle(color6)
+    colors_cycle5 = cycle(color5)
+    colors_cycle4 = cycle(color4)
+    colors_cycle3 = cycle(color3)
+    colors_cycle2 = cycle(color2)
+    colors_cycle1 = cycle(color1)
+    colors_cycle0 = cycle(color0)  
+reload_colors()
+
 def whichcolor8(): # All colors
     global thecolor
     thecolor = next(colors_cycle8)
-    thecolor.click()    
-color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7]
-colors_cycle7 = cycle(color7) # Blue colors
+    thecolor.click() 
+
 def whichcolor7():
     global thecolor
     thecolor = next(colors_cycle7)
     thecolor.click()
-color6 = [black, white]
-colors_cycle6 = cycle(color6)
+
 def whichcolor6(): # Black and white
     global thecolor
     thecolor = next(colors_cycle6)
     thecolor.click()    
-color5 = [brown1, brown2, brown3, brown4, grey4, peach3, white]
-colors_cycle5 = cycle(color5)
+
 def whichcolor5(): # Tree trunk colors
     global thecolor
     thecolor = next(colors_cycle5)
     thecolor.click()    
-color4 = [brown1, brown2, brown3, brown4]
-colors_cycle4 = cycle(color4)
+
 def whichcolor4(): # Brown colors
     global thecolor
     thecolor = next(colors_cycle4)
     thecolor.click()    
-color3 = [grey4, grey3, grey2, grey1]
-colors_cycle3 = cycle(color3)
+
 def whichcolor3(): # Grey colors
     global thecolor
     thecolor = next(colors_cycle3)
     thecolor.click()    
-color2 = [yellow1, yellow2, yellow3, yellow4]
-colors_cycle2 = cycle(color2)
+
 def whichcolor2(): # Yellow colors
     global thecolor
     thecolor = next(colors_cycle2)
     thecolor.click()    
-color1 = [green1, green2, green3, green5]
-colors_cycle1 = cycle(color1)
+
 def whichcolor1(): # Green colors
     global thecolor
     thecolor = next(colors_cycle1)
     thecolor.click()    
-color0 = [red1, red2, red3]
-colors_cycle0 = cycle(color0)
+
 def whichcolor0(): # Red colors
     global thecolor
     thecolor = next(colors_cycle0)
-    thecolor.click()    
+    thecolor.click()
+
 def rainbowbrush(): #this is how the key combos work, for example if you press A and W it will run whichcolor2() aka the yellow colors
     if k.is_pressed("s") == True or k.is_pressed("a") == True or k.is_pressed("w") == True or k.is_pressed("d") == True:        
         #only A
@@ -155,16 +169,17 @@ def rainbowbrush(): #this is how the key combos work, for example if you press A
             whichcolor6()
         #only SA
         if k.is_pressed("s") == True and k.is_pressed("a") == True and k.is_pressed("d") != True and k.is_pressed("w") != True:
-            whichcolor7()            
-def vectoring(): #for use in direction of trees, among other things
-    global vector
-    vector += 1
-    if vector > 4:
-        vector = 0        
+            whichcolor7()
+            
+vectors = [1,2,3,4];vector_cycle = cycle(vectors)
+def vectoring():
+    global vector #for use in direction of trees, among other things
+    vector = next(vector_cycle)
+        
 def colorshift(): # this function is still a work in progress and you can set it in the controls, tree leafs are a good use for this, it paints the next color on the list after checking which color is under your mouse cursor
-    global thecolor, pixy, z, x, y, vector    
-    pixy = p.pixel(x + z, y - z) #check nearby pixel color    
-    if pixy == (255,255,255):
+    global thecolor, pixy, z, x, y  
+    pixy = p.pixel(x + z, y - z) #check nearby pixel color
+    if pixy == (255,255,255): # paints the next color on the list based on the color it sees
         thecolor = grey1        
     elif pixy == (196,196,196):
         thecolor = grey2        
@@ -236,7 +251,8 @@ def colorshift(): # this function is still a work in progress and you can set it
         thecolor = white
     else:
         pass        
-    thecolor.click() #once it knows what color to click, clicks it     
+    thecolor.click() #once it knows what color to click, clicks it
+    
 def tree_2(): #palm tree
     global z, x, y, vector, thecolor # x, y for coords, z is for facing direction
     #lets get a vector variable for later
@@ -286,7 +302,8 @@ def tree_2(): #palm tree
     p.moveTo(x-z,y-2)
     p.moveTo(x+z,y-2)
     k.release('space')
-    z = -z #invert z so the next tree faces the opposite direction   
+    z = -z #invert z so the next tree faces the opposite direction
+    
 def tree_1(): #normal style tree that using every color for the leaves based on colorshift()
     global z, x, y, vector, thecolor
     vectoring()
@@ -314,7 +331,8 @@ def tree_1(): #normal style tree that using every color for the leaves based on 
         p.moveTo(x-z,y)
         p.moveTo(x+z,y)
         p.moveTo(x,y-1)
-    k.release('space')    
+    k.release('space')
+    
 def mongus(): #everyones favorite, draw an among us character, facing either left or right, and the color it chooses can be set with whichcolor() or colorshift() or nextcolor()
     global z, thecolor, x, y
     whichcolor8()
@@ -346,21 +364,27 @@ def mongus(): #everyones favorite, draw an among us character, facing either lef
     p.moveTo(x-z,y)
     p.moveTo(x-z,y)
     k.release('space')
-    z = -z #next amongus will face other direction if you invert z 
+    z = -z #next amongus will face other direction if you invert z
+    
 ### Controls Section ###
 def mouse_handler(event):
     global x, y, z, tX, tY, bX, bY, handler, pixx, pixx2
     x, y = p.position()
-    #this code is how to set your own hotkeys:
-    if k.is_pressed("j"):  #set the hotkey like this. Note: use reload_colors() if you have changed pages before drawing again (doesnt work on different tabs)
-        reload_colors()    #and the function you want it to run when you press the key
-    #and the rest of the controls (add your own to this list if you want)
     if k.is_pressed("q"):
-        whichcolor8()
+        try:
+            whichcolor8()
+        except:
+            reload_colors()
     if k.is_pressed("e"):
-        mongus()
+        try:
+            mongus()
+        except:
+            reload_colors()
     if k.is_pressed("w") == True or k.is_pressed("a") == True or k.is_pressed("s") == True or k.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
-        rainbowbrush()
+        try:
+            rainbowbrush()
+        except:
+            reload_colors()
     #these next two hotkeys are needed to set your square for random tree and among us drawing, first press Y for your top left corner, and then U for your bottom left corner
     #and then you can use R to draw random trees or K to draw random Among Us characters
     if k.is_pressed("y"):
@@ -407,5 +431,6 @@ def mouse_handler(event):
     if k.is_pressed('esc'):#hold esc to halt the script in case of emergency, you will need to run the script again to use it again if you do this
         m.unhook(mouse_handler)
         quit()
+        
 ### End Controls ##        
 m.hook(mouse_handler)### program starting now ###
