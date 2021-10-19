@@ -89,7 +89,7 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     color0 = [red1, red2, red3]
     #the list above is linked to the whichcolor() functions further below
     colors_cycle8 = cycle(color8)
-    colors_cycle7 = cycle(color7) # Blue colors
+    colors_cycle7 = cycle(color7) 
     colors_cycle6 = cycle(color6)
     colors_cycle5 = cycle(color5)
     colors_cycle4 = cycle(color4)
@@ -104,7 +104,7 @@ def whichcolor8(): # All colors
     thecolor = next(colors_cycle8)
     thecolor.click() 
 
-def whichcolor7():
+def whichcolor7(): # Blue colors
     global thecolor
     thecolor = next(colors_cycle7)
     thecolor.click()
@@ -333,7 +333,7 @@ def tree_1(): #normal style tree that using every color for the leaves based on 
         p.moveTo(x,y-1)
     k.release('space')
     
-def mongus(): #everyones favorite, draw an among us character, facing either left or right, and the color it chooses can be set with whichcolor() or colorshift() or nextcolor()
+def mongus(): # Draws an Among Us character facing either left or right and the color it chooses can be set with whichcolor()'s or colorshift().
     global z, thecolor, x, y
     whichcolor8()
     p.moveTo(x,y)
@@ -364,7 +364,7 @@ def mongus(): #everyones favorite, draw an among us character, facing either lef
     p.moveTo(x-z,y)
     p.moveTo(x-z,y)
     k.release('space')
-    z = -z #next amongus will face other direction if you invert z
+    z = -z #next mongus will face other direction
     
 ### Controls Section ###
 def mouse_handler(event):
