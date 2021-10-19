@@ -13,7 +13,7 @@ driver = webdriver.Chrome() #you need chromedriver.exe: https://chromedriver.chr
 
 #some vars for later:
 z, vector = 1, 0
-thecolor, handler = None, None
+thecolor = None
 tX, bX, tY, bY = None, None, None, None  
 
 #login sequence, using Reddit, set your username and pass for Reddit in crewmate.py's variables 'username' and 'password'
@@ -89,7 +89,7 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     color0 = [red1, red2, red3]
     #the list above is linked to the whichcolor() functions further below
     colors_cycle8 = cycle(color8)
-    colors_cycle7 = cycle(color7) 
+    colors_cycle7 = cycle(color7)
     colors_cycle6 = cycle(color6)
     colors_cycle5 = cycle(color5)
     colors_cycle4 = cycle(color4)
@@ -333,7 +333,7 @@ def tree_1(): #normal style tree that using every color for the leaves based on 
         p.moveTo(x,y-1)
     k.release('space')
     
-def mongus(): # Draws an Among Us character facing either left or right and the color it chooses can be set with whichcolor()'s or colorshift().
+def mongus(): #draw an among us character
     global z, thecolor, x, y
     whichcolor8()
     p.moveTo(x,y)
@@ -364,11 +364,11 @@ def mongus(): # Draws an Among Us character facing either left or right and the 
     p.moveTo(x-z,y)
     p.moveTo(x-z,y)
     k.release('space')
-    z = -z #next mongus will face other direction
+    z = -z #next amongus will face other direction if you invert z
     
 ### Controls Section ###
 def mouse_handler(event):
-    global x, y, z, tX, tY, bX, bY, handler, pixx, pixx2
+    global x, y, z, tX, tY, bX, bY, pixx, pixx2
     x, y = p.position()
     if k.is_pressed("q"):
         try:
@@ -404,9 +404,15 @@ def mouse_handler(event):
             pixx2 = p.pixel(x-z*4, y-5)
             if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
                 if r.random() > 0.75:
-                    tree_2()
+                    try:
+                        tree_2()
+                    except:
+                        reload_colors()
                 else:
-                    tree_1()
+                    try:
+                        tree_1()
+                    except:
+                        reload_colors()
             else:                
                 pass                
             if k.is_pressed("j"):#hold down on J to end the random drawing
@@ -423,7 +429,10 @@ def mouse_handler(event):
             pixx = p.pixel(x+z, y+z)
             pixx2 = p.pixel(x-z*4, y-5)
             if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
-                mongus()
+                try:
+                    mongus()
+                except:
+                    reload_colors()
             else:                
                 pass                
             if k.is_pressed("j"):#hold down on J to end the random drawing
