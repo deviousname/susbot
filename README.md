@@ -12,10 +12,6 @@ If you use Chrome, you need to find the matching chromedriver.exe (I included th
 
 chromedriver can be found here:  https://chromedriver.chromium.org/downloads
 
-Firefox users should work too, and they will need to get their corresponding Firefox (geckodriver) driver.
-
-Firefox drivers can be found here: https://github.com/mozilla/geckodriver/releases
-
 To run it: right click on susbot_main.py and open with IDLE then press F5 to run. Doubleclicking the file does not work.
 
 
@@ -26,8 +22,6 @@ Once you have the driver, simply copy and paste it into the same folder as susbo
 Set your Reddit name and password in crewmate.py and then run susbotmain.py
 
 Note: while it is logging in don't click around or do anything, just wait for pixeplace.io to fully load in, and then you can use it.
-
-If you switch maps in the main tab, you need to reload the colors by holding down "j" for a moment.
 
 IMPORTANT: All the imports need to be installed, if you don't know how to do that, I reccomend looking up how pip install for Windows 10 Python 3.7.9 which is what I use.
 
