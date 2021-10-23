@@ -14,11 +14,6 @@ chromedriver can be found here:  https://chromedriver.chromium.org/downloads
 
 To run it: right click on susbot_main.py and open with IDLE then press F5 to run. Doubleclicking the file does not work.
 
-
-Also read this comment to set the driver in the code if you are using Firefox: https://github.com/deviousname/susbot/blob/be712780379d2fb0215220c59d3cbf306317b7c5/susbot_main.py#L52
-
-Once you have the driver, simply copy and paste it into the same folder as susbot.
-
 Set your Reddit name and password in crewmate.py and then run susbotmain.py
 
 Note: while it is logging in don't click around or do anything, just wait for pixeplace.io to fully load in, and then you can use it.
