@@ -48,7 +48,7 @@ class Bot():
             self.color_dict = {}
             for color_name in ["white","grey1","grey2","grey3","grey4","black","green1","green2","green3","green5","yellow1","yellow2","yellow3","yellow4","brown1","brown2","brown3","red1","red2","red3","brown4","peach1","peach2","peach3","pink1","pink2","pink3","pink4","blue1","blue2","blue3","blue4","blue5","blue6","blue7"],x in range(0,37):
                 path = self.driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[x]
-                self.color_dict.update({f"colorname":path})
+                self.color_dict.update({f"{color_name}":path})
             self.Colors_W =  cycle([self.color_dict.get("grey4"), self.color_dict.get("grey3"), self.color_dict.get("grey2"), self.color_dict.get("grey1")])
             self.Colors_A =  cycle([self.color_dict.get("green1"), self.color_dict.get("green2"), self.color_dict.get("green3"), self.color_dict.get("green5")])
             self.Colors_S =  cycle([self.color_dict.get("red1"), self.color_dict.get("red2"), self.color_dict.get("red3")])
