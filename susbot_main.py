@@ -1,14 +1,22 @@
 #made by deviousname, someone better than me can clean this code up and improve upon it
 #feel free to change it to suit your needs *you do not have permission to sell any code derived from this code: GNU Affero General Public License v3.0
-import crewmate #this first import is where you store your username and password to login to Reddit(required), found in: crewmate.py
-import pyautogui as p
-import keyboard as k
-import time as t
-import random as r
-import mouse as m
+
+#this first import is where you store your username and password to login to Reddit(required), found in: crewmate.py
+import crewmate
+
+import random
+import time
+from itertools import cycle
+
+#Controll imports
+import keyboard
+import mouse
+import pyautogui as autogui
+
+#other
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from itertools import cycle
+
 driver = webdriver.Chrome() #you need chromedriver.exe: https://chromedriver.chromium.org/downloads
 
 #some vars for later:
@@ -22,7 +30,7 @@ driver.get("https://pixelplace.io/api/sso.php?type=2&action=login")
 driver.find_element_by_id('loginUsername').send_keys(crewmate.username)
 driver.find_element_by_id('loginPassword').send_keys(crewmate.password)
 driver.find_elements_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4].click()
-t.sleep(7)#adjust this sleep in seconds if logging after sending name/pass is slow for you
+time.sleep(7)#adjust this sleep in seconds if logging after sending name/pass is slow for you
 driver.find_elements_by_xpath('/html/body/div[3]/div/div[2]/form/div/input')[0].click()
 print ('All done logging in, ready to paint.')
 #end login
@@ -145,30 +153,30 @@ def whichcolor0(): # Red colors
     thecolor.click()
 
 def rainbowbrush(): #this is how the key combos work, for example if you press A and W it will run whichcolor2() aka the yellow colors
-    if k.is_pressed("s") == True or k.is_pressed("a") == True or k.is_pressed("w") == True or k.is_pressed("d") == True:        
+    if keyboard.is_pressed("s") == True or keyboard.is_pressed("a") == True or keyboard.is_pressed("w") == True or keyboard.is_pressed("d") == True:        
         #only A
-        if k.is_pressed("a") == True and k.is_pressed("s") != True and k.is_pressed("w") != True and k.is_pressed("d") != True:
+        if keyboard.is_pressed("a") == True and keyboard.is_pressed("s") != True and keyboard.is_pressed("w") != True and keyboard.is_pressed("d") != True:
             whichcolor1()
         #only S
-        if k.is_pressed("s") == True and k.is_pressed("a") != True and k.is_pressed("w") != True and k.is_pressed("d") != True:
+        if keyboard.is_pressed("s") == True and keyboard.is_pressed("a") != True and keyboard.is_pressed("w") != True and keyboard.is_pressed("d") != True:
             whichcolor0()    
         #only AW
-        if k.is_pressed("a") == True and k.is_pressed("w") == True and k.is_pressed("d") != True and k.is_pressed("s") != True:
+        if keyboard.is_pressed("a") == True and keyboard.is_pressed("w") == True and keyboard.is_pressed("d") != True and keyboard.is_pressed("s") != True:
             whichcolor2()
         #only W
-        if k.is_pressed("w") == True and k.is_pressed("a") != True and k.is_pressed("s") != True and k.is_pressed("d") != True:
+        if keyboard.is_pressed("w") == True and keyboard.is_pressed("a") != True and keyboard.is_pressed("s") != True and keyboard.is_pressed("d") != True:
             whichcolor3()
         #only WD
-        if k.is_pressed("w") == True and k.is_pressed("d") == True and k.is_pressed("s") != True and k.is_pressed("a") != True:
+        if keyboard.is_pressed("w") == True and keyboard.is_pressed("d") == True and keyboard.is_pressed("s") != True and keyboard.is_pressed("a") != True:
             whichcolor4()
         #only D
-        if k.is_pressed("d") == True and k.is_pressed("s") != True and k.is_pressed("a") != True and k.is_pressed("w") != True:
+        if keyboard.is_pressed("d") == True and keyboard.is_pressed("s") != True and keyboard.is_pressed("a") != True and keyboard.is_pressed("w") != True:
             whichcolor5()
         #only DS
-        if k.is_pressed("d") == True and k.is_pressed("s") == True and k.is_pressed("a") != True and k.is_pressed("w") != True:
+        if keyboard.is_pressed("d") == True and keyboard.is_pressed("s") == True and keyboard.is_pressed("a") != True and keyboard.is_pressed("w") != True:
             whichcolor6()
         #only SA
-        if k.is_pressed("s") == True and k.is_pressed("a") == True and k.is_pressed("d") != True and k.is_pressed("w") != True:
+        if keyboard.is_pressed("s") == True and keyboard.is_pressed("a") == True and keyboard.is_pressed("d") != True and keyboard.is_pressed("w") != True:
             whichcolor7()
             
 vectors = [1,2,3,4];vector_cycle = cycle(vectors)
@@ -178,7 +186,7 @@ def vectoring():
         
 def colorshift(): # this function is still a work in progress and you can set it in the controls, tree leafs are a good use for this, it paints the next color on the list after checking which color is under your mouse cursor
     global thecolor, pixy, z, x, y  
-    pixy = p.pixel(x + z, y - z) #check nearby pixel color
+    pixy = autogui.pixel(x + z, y - z) #check nearby pixel color
     if pixy == (255,255,255): # paints the next color on the list based on the color it sees
         thecolor = grey1        
     elif pixy == (196,196,196):
@@ -258,152 +266,152 @@ def tree_2(): #palm tree
     #lets get a vector variable for later
     vectoring() #returns 1, 2, 3, or 4
     brown1.click()
-    k.press('space')
+    keyboard.press('space')
     #build the tree:
     if vector == 1 or vector == 2:
         #trunk start (2 x 3)
         for _ in range(2):
-            p.moveTo(x,y)
+            autogui.moveTo(x,y)
             y -= 1
         x += z
         for _ in range(2):
-            p.moveTo(x,y)
+            autogui.moveTo(x,y)
             y -= 1
         x += z
         for _ in range(2):
-            p.moveTo(x,y)
+            autogui.moveTo(x,y)
             y -= 1
         y += 1
         # trunk end
     else:
         #trunk start (3 x 2)
         for _ in range(3):
-            p.moveTo(x,y)
+            autogui.moveTo(x,y)
             y -= 1
         x += z
         for _ in range(3):
-            p.moveTo(x,y)
+            autogui.moveTo(x,y)
             y -= 1
         y += 1            
         # trunk end        
     #draw the leaves:
-    p.moveTo(x+z,y)
+    autogui.moveTo(x+z,y)
     whichcolor1()
     thecolor.click()
-    p.moveTo(x-z,y)
-    p.moveTo(x+z+z+z,y)
-    p.moveTo(x-z-z-z,y)
-    p.moveTo(x,y-1)
-    p.moveTo(x-z,y-1)
-    p.moveTo(x+z,y-1)
-    p.moveTo(x-z*2,y-1)
-    p.moveTo(x+z*2,y-1)
-    p.moveTo(x,y-2)
-    p.moveTo(x-z,y-2)
-    p.moveTo(x+z,y-2)
-    k.release('space')
+    autogui.moveTo(x-z,y)
+    autogui.moveTo(x+z+z+z,y)
+    autogui.moveTo(x-z-z-z,y)
+    autogui.moveTo(x,y-1)
+    autogui.moveTo(x-z,y-1)
+    autogui.moveTo(x+z,y-1)
+    autogui.moveTo(x-z*2,y-1)
+    autogui.moveTo(x+z*2,y-1)
+    autogui.moveTo(x,y-2)
+    autogui.moveTo(x-z,y-2)
+    autogui.moveTo(x+z,y-2)
+    keyboard.release('space')
     z = -z #invert z so the next tree faces the opposite direction
     
 def tree_1(): #normal style tree that using every color for the leaves based on colorshift()
     global z, x, y, vector, thecolor
     vectoring()
     whichcolor5()#tree trunk colors
-    p.moveTo(x,y)
-    k.press('space')
+    autogui.moveTo(x,y)
+    keyboard.press('space')
     for _ in range(3):
-        p.moveTo(x,y)
+        autogui.moveTo(x,y)
         y-=1
     if z > 0:
         for _ in range(1):
-            p.moveTo(x,y)
+            autogui.moveTo(x,y)
             y-=1
-    p.moveTo(x, y)
+    autogui.moveTo(x, y)
     colorshift() #leaf color, you can use whichcolor1() here for example or the other whichcolor() functions to change which color the leaves will be
-    p.moveTo(x-z,y)
-    p.moveTo(x+z,y)
-    p.moveTo(x,y-1)
+    autogui.moveTo(x-z,y)
+    autogui.moveTo(x+z,y)
+    autogui.moveTo(x,y-1)
     y = y - 1
-    p.moveTo(x-z,y)
-    p.moveTo(x+z,y)
-    p.moveTo(x,y-1)
+    autogui.moveTo(x-z,y)
+    autogui.moveTo(x+z,y)
+    autogui.moveTo(x,y-1)
     if z > 0:
         y -= 1
-        p.moveTo(x-z,y)
-        p.moveTo(x+z,y)
-        p.moveTo(x,y-1)
-    k.release('space')
+        autogui.moveTo(x-z,y)
+        autogui.moveTo(x+z,y)
+        autogui.moveTo(x,y-1)
+    keyboard.release('space')
     
 def mongus(): #draw an among us character
     global z, thecolor, x, y
     whichcolor8()
-    p.moveTo(x,y)
-    k.press('space')
+    autogui.moveTo(x,y)
+    keyboard.press('space')
     for _ in range(2):
-        p.moveTo(x, y)
-        p.moveTo(x+z+z, y)
+        autogui.moveTo(x, y)
+        autogui.moveTo(x+z+z, y)
         y -= 1
     for _ in range(2):
-        p.moveTo(x, y)
-        p.moveTo(x, y+1)
+        autogui.moveTo(x, y)
+        autogui.moveTo(x, y+1)
         x += z
     y = y + 2
     for _ in range(2):
-        p.moveTo(x, y)
-        p.moveTo(x+z, y-2)
+        autogui.moveTo(x, y)
+        autogui.moveTo(x+z, y-2)
         y -= 1
     for _ in range(2):
-        p.moveTo(x, y)
+        autogui.moveTo(x, y)
         y -= 1
     for _ in range(3):
-        p.moveTo(x, y)
+        autogui.moveTo(x, y)
         x -= z
     x += z*2
     y += 1
-    p.moveTo(x,y)
+    autogui.moveTo(x,y)
     blue7.click()
-    p.moveTo(x-z,y)
-    p.moveTo(x-z,y)
-    k.release('space')
+    autogui.moveTo(x-z,y)
+    autogui.moveTo(x-z,y)
+    keyboard.release('space')
     z = -z #next amongus will face other direction if you invert z
     
 ### Controls Section ###
 def mouse_handler(event):
     global x, y, z, tX, tY, bX, bY, pixx, pixx2
-    x, y = p.position()
-    if k.is_pressed("q"):
+    x, y = autogui.position()
+    if keyboard.is_pressed("q"):
         try:
             whichcolor8()
         except:
             reload_colors()
-    if k.is_pressed("e"):
+    if keyboard.is_pressed("e"):
         try:
             mongus()
         except:
             reload_colors()
-    if k.is_pressed("w") == True or k.is_pressed("a") == True or k.is_pressed("s") == True or k.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
+    if keyboard.is_pressed("w") == True or keyboard.is_pressed("a") == True or keyboard.is_pressed("s") == True or keyboard.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
         try:
             rainbowbrush()
         except:
             reload_colors()
     #these next two hotkeys are needed to set your square for random tree and among us drawing, first press Y for your top left corner, and then U for your bottom left corner
     #and then you can use R to draw random trees or K to draw random Among Us characters
-    if k.is_pressed("y"):
-        tX, tY = p.position()
-    if k.is_pressed("u"):
-        bX, bY = p.position()
-    if k.is_pressed("r"):#random tree, make sure your zoom is at 1 or won't scale correctly
+    if keyboard.is_pressed("y"):
+        tX, tY = autogui.position()
+    if keyboard.is_pressed("u"):
+        bX, bY = autogui.position()
+    if keyboard.is_pressed("r"):#random tree, make sure your zoom is at 1 or won't scale correctly
         while True:
-            if r.random() > 0.5:
+            if random.random() > 0.5:
                 z = 1
             else:
                 z = -1
-            x = r.randrange(tX,bX)
-            y = r.randrange(tY,bY)
-            p.moveTo(x,y)
-            pixx = p.pixel(x+z, y+z)
-            pixx2 = p.pixel(x-z*4, y-5)
+            x = random.randrange(tX,bX)
+            y = random.randrange(tY,bY)
+            autogui.moveTo(x,y)
+            pixx = autogui.pixel(x+z, y+z)
+            pixx2 = autogui.pixel(x-z*4, y-5)
             if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
-                if r.random() > 0.75:
+                if random.random() > 0.75:
                     try:
                         tree_2()
                     except:
@@ -415,19 +423,19 @@ def mouse_handler(event):
                         reload_colors()
             else:                
                 pass                
-            if k.is_pressed("j"):#hold down on J to end the random drawing
+            if keyboard.is_pressed("j"):#hold down on J to end the random drawing
                 break        
-    if k.is_pressed("k"):#random amongus, make sure your zoom is at 1 or won't scale correctly
+    if keyboard.is_pressed("k"):#random amongus, make sure your zoom is at 1 or won't scale correctly
         while True:
-            if r.random() > 0.5:
+            if random.random() > 0.5:
                 z = 1
             else:
                 z = -1
-            x = r.randrange(tX,bX)
-            y = r.randrange(tY,bY)
-            p.moveTo(x,y)
-            pixx = p.pixel(x+z, y+z)
-            pixx2 = p.pixel(x-z*4, y-5)
+            x = random.randrange(tX,bX)
+            y = random.randrange(tY,bY)
+            autogui.moveTo(x,y)
+            pixx = autogui.pixel(x+z, y+z)
+            pixx2 = autogui.pixel(x-z*4, y-5)
             if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
                 try:
                     mongus()
@@ -435,11 +443,11 @@ def mouse_handler(event):
                     reload_colors()
             else:                
                 pass                
-            if k.is_pressed("j"):#hold down on J to end the random drawing
+            if keyboard.is_pressed("j"):#hold down on J to end the random drawing
                 break
-    if k.is_pressed('esc'):#hold esc to halt the script in case of emergency, you will need to run the script again to use it again if you do this
-        m.unhook(mouse_handler)
+    if keyboard.is_pressed('esc'):#hold esc to halt the script in case of emergency, you will need to run the script again to use it again if you do this
+        mouse.unhook(mouse_handler)
         quit()
         
 ### End Controls ##        
-m.hook(mouse_handler)### program starting now ###
+mouse.hook(mouse_handler)### program starting now ###
