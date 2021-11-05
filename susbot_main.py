@@ -88,6 +88,85 @@ class Bot():
             if keyboard.is_pressed("s") == True and keyboard.is_pressed("a") == True and keyboard.is_pressed("d") != True and keyboard.is_pressed("w") != True:
                 next(self.Colors_SA).click()
 
+    # this function is still a work in progress and you can set it in the controls, tree leafs are a good use for this, it paints the next color on the list after checking which color is under your mouse cursor
+    def colorshift(self): 
+        x,y = autogui.position()
+        pixy = autogui.pixel(x,y) #check nearby pixel color
+        if pixy == (255,255,255): # paints the next color on the list based on the color it sees
+            color = self.color_dict.get("grey1")        
+        elif pixy == (196,196,196):
+            color = self.color_dict.get("grey2")        
+        elif pixy == (136,136,136):
+            color = self.color_dict.get("grey3")        
+        elif pixy == (85,85,85):
+            color = self.color_dict.get("grey4")        
+        elif pixy == (34,34,34):
+            color = self.color_dict.get("black")        
+        elif pixy == (0,0,0):
+            color = self.color_dict.get("green1")        
+        elif pixy == (0,102,0):
+            color = self.color_dict.get("green2")        
+        elif pixy == (34,177,76):
+            color = self.color_dict.get("green3")    
+        elif pixy == (81,225,25):
+            color = self.color_dict.get("green5")        
+        elif pixy == (148,224,68):
+            color = self.color_dict.get("yellow1")        
+        elif pixy == (251,255,91):
+            color = self.color_dict.get("yellow2")        
+        elif pixy == (229,217,0):
+            color = self.color_dict.get("yellow3")        
+        elif pixy == (230,190,12):
+            color = self.color_dict.get("yellow4")        
+        elif pixy == (229,149,0):
+            color = self.color_dict.get("brown1")        
+        elif pixy == (160,106,66):
+            color = self.color_dict.get("brown2")        
+        elif pixy == (153,90,26):
+            color = self.color_dict.get("brown3")        
+        elif pixy == (99,60,31):
+            color = self.color_dict.get("red1")        
+        elif pixy == (107,0,0):
+            color = self.color_dict.get("red2")        
+        elif pixy == (159,0,0):
+            color = self.color_dict.get("red3")        
+        elif pixy == (255,57,4):
+            color = self.color_dict.get("brown4")        
+        elif pixy == (187,79,0):
+            color = self.color_dict.get("peach1")        
+        elif pixy == (255,117,95):
+            color = self.color_dict.get("peach2")        
+        elif pixy == (255,196,159):
+            color = self.color_dict.get("peach3")        
+        elif pixy == (255,223,204):
+            color = self.color_dict.get("pink1")        
+        elif pixy == (255,167,209):
+            color = self.color_dict.get("pink2")        
+        elif pixy == (207,110,228):
+            color = self.color_dict.get("pink3")        
+        elif pixy == (236,8,236):
+            color = self.color_dict.get("pink4")        
+        elif pixy == (81,0,255):
+            color = self.color_dict.get("blue1")        
+        elif pixy == (2,7,99):
+            color = self.color_dict.get("blue2")        
+        elif pixy == (0,0,234):
+            color = self.color_dict.get("blue3")        
+        elif pixy == (4,75,255):
+            color = self.color_dict.get("blue4")        
+        elif pixy == (101,131,207):
+            color = self.color_dict.get("blue5")        
+        elif pixy == (54,186,255):
+            color = self.color_dict.get("blue6")        
+        elif pixy == (0,131,199):
+            color = self.color_dict.get("blue7")        
+        elif pixy == (69,255,200):
+            color = self.color_dict.get("white")
+        else:
+            print("Unknown Color")
+            pass        
+        color.click() #once it knows what color to click, clicks it
+
 def print_Controls():
     print ("""
     -Controls-')
@@ -99,96 +178,9 @@ def print_Controls():
     ESC: hold Escape to halt the script.
     """)
 
-
-#some vars for later:
-z, vector = 1, 0
-thecolor = None
-tX, bX, tY, bY = None, None, None, None  
-
-            
-vectors = [1,2,3,4]
-vector_cycle = cycle(vectors)
-
 def vectoring():
     global vector #for use in direction of trees, among other things
     vector = next(vector_cycle)
-        
-def colorshift(): # this function is still a work in progress and you can set it in the controls, tree leafs are a good use for this, it paints the next color on the list after checking which color is under your mouse cursor
-    global thecolor, pixy, z, x, y  
-    pixy = autogui.pixel(x + z, y - z) #check nearby pixel color
-    if pixy == (255,255,255): # paints the next color on the list based on the color it sees
-        thecolor = grey1        
-    elif pixy == (196,196,196):
-        thecolor = grey2        
-    elif pixy == (136,136,136):
-        thecolor = grey3        
-    elif pixy == (85,85,85):
-        thecolor = grey4        
-    elif pixy == (34,34,34):
-        thecolor = black        
-    elif pixy == (0,0,0):
-        thecolor = green1        
-    elif pixy == (0,102,0):
-        thecolor = green2        
-    elif pixy == (34,177,76):
-        thecolor = green3    
-    elif pixy == (81,225,25):
-        thecolor = green5        
-    elif pixy == (148,224,68):
-        thecolor = yellow1        
-    elif pixy == (251,255,91):
-        thecolor = yellow2        
-    elif pixy == (229,217,0):
-        thecolor = yellow3        
-    elif pixy == (230,190,12):
-        thecolor = yellow4        
-    elif pixy == (229,149,0):
-        thecolor = brown1        
-    elif pixy == (160,106,66):
-        thecolor = brown2        
-    elif pixy == (153,90,26):
-        thecolor = brown3        
-    elif pixy == (99,60,31):
-        thecolor = red1        
-    elif pixy == (107,0,0):
-        thecolor = red2        
-    elif pixy == (159,0,0):
-        thecolor = red3        
-    elif pixy == (255,57,4):
-        thecolor = brown4        
-    elif pixy == (187,79,0):
-        thecolor = peach1        
-    elif pixy == (255,117,95):
-        thecolor = peach2        
-    elif pixy == (255,196,159):
-        thecolor = peach3        
-    elif pixy == (255,223,204):
-        thecolor = pink1        
-    elif pixy == (255,167,209):
-        thecolor = pink2        
-    elif pixy == (207,110,228):
-        thecolor = pink3        
-    elif pixy == (236,8,236):
-        thecolor = pink4        
-    elif pixy == (81,0,255):
-        thecolor = blue1        
-    elif pixy == (2,7,99):
-        thecolor = blue2        
-    elif pixy == (0,0,234):
-        thecolor = blue3        
-    elif pixy == (4,75,255):
-        thecolor = blue4        
-    elif pixy == (101,131,207):
-        thecolor = blue5        
-    elif pixy == (54,186,255):
-        thecolor = blue6        
-    elif pixy == (0,131,199):
-        thecolor = blue7        
-    elif pixy == (69,255,200):
-        thecolor = white
-    else:
-        pass        
-    thecolor.click() #once it knows what color to click, clicks it
     
 def tree_2(): #palm tree
     global z, x, y, vector, thecolor # x, y for coords, z is for facing direction
