@@ -22,8 +22,17 @@ driver.get("https://pixelplace.io/api/sso.php?type=2&action=login")
 driver.find_element_by_id('loginUsername').send_keys(crewmate.username)
 driver.find_element_by_id('loginPassword').send_keys(crewmate.password)
 driver.find_elements_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4].click()
-t.sleep(7)#adjust this sleep in seconds if logging after sending name/pass is slow for you
-driver.find_elements_by_xpath('/html/body/div[3]/div/div[2]/form/div/input')[0].click()
+
+failed = None
+while True:
+    try:
+        driver.find_elements_by_xpath('/html/body/div[3]/div/div[2]/form/div/input')[0].click()
+        failed = False
+    except:
+        failed = True
+    if failed == False:
+        break
+    
 print ('All done logging in, ready to paint.')
 #end login
 
