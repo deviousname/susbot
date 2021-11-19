@@ -46,7 +46,7 @@ class Bot():
     def get_colors(self): 
             #setting up the colors for fast color switching:
             self.color_dict = {}
-            for color_name in ["white","grey1","grey2","grey3","grey4","black","green1","green2","green3","green5","yellow1","yellow2","yellow3","yellow4","brown1","brown2","brown3","red1","red2","red3","brown4","peach1","peach2","peach3","pink1","pink2","pink3","pink4","blue1","blue2","blue3","blue4","blue5","blue6","blue7"],x in range(0,37):
+            for color_name,x in zip(["white","grey1","grey2","grey3","grey4","black","green1","green2","green3","green5","yellow1","yellow2","yellow3","yellow4","brown1","brown2","brown3","red1","red2","red3","brown4","peach1","peach2","peach3","pink1","pink2","pink3","pink4","blue1","blue2","blue3","blue4","blue5","blue6","blue7"],range(0,34)):
                 path = self.driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[x]
                 self.color_dict.update({f"{color_name}":path})
             self.Colors_W =  cycle([self.color_dict.get("grey4"), self.color_dict.get("grey3"), self.color_dict.get("grey2"), self.color_dict.get("grey1")])
@@ -57,6 +57,11 @@ class Bot():
             self.Colors_WD = cycle([self.color_dict.get("brown1"), self.color_dict.get("brown2"), self.color_dict.get("brown3"), self.color_dict.get("brown4")])
             self.Colors_DS = cycle([self.color_dict.get("black"), self.color_dict.get("white")])
             self.Colors_SA = cycle([self.color_dict.get("blue1"),self.color_dict.get("blue2"),self.color_dict.get("blue3"),self.color_dict.get("blue4"),self.color_dict.get("blue5"),self.color_dict.get("blue6"),self.color_dict.get("blue7")])
+            self.Colors_ALL = cycle([self.color_dict.get("white"),self.color_dict.get("grey1"),self.color_dict.get("grey2"),self.color_dict.get("grey3"),self.color_dict.get("grey4"),self.color_dict.get("black"),self.color_dict.get("green1"),self.color_dict.get("green2"),self.color_dict.get("green3"),self.color_dict.get("green5"),self.color_dict.get("yellow1"),self.color_dict.get("yellow2"),self.color_dict.get("yellow3"),self.color_dict.get("yellow4"),self.color_dict.get("brown1"),self.color_dict.get("brown2"),self.color_dict.get("brown3"),self.color_dict.get("red1"),self.color_dict.get("red2"),self.color_dict.get("red3"),self.color_dict.get("brown4"),self.color_dict.get("peach1"),self.color_dict.get("peach2"),self.color_dict.get("peach3"),self.color_dict.get("pink1"),self.color_dict.get("pink2"),self.color_dict.get("pink3"),self.color_dict.get("pink4"),self.color_dict.get("blue1"),self.color_dict.get("blue2"),self.color_dict.get("blue3"),self.color_dict.get("blue4"),self.color_dict.get("blue5"),self.color_dict.get("blue6"),self.color_dict.get("blue7")]
+)
+
+
+
 
     #Simon - Adapted the new Color System and compacted it a bit
 
@@ -98,6 +103,111 @@ class Bot():
         except:
             pass
 
+    def tree_2(self,side): #palm tree
+        if self.lastside == side:
+            side = -side
+        x,y = autogui.position()
+        #vector is value between 1 and 4
+        self.color_dict.get("brown1").click()
+        keyboard.press('space')
+        #build the tree:
+        variant = random.randint(1,4)
+        if variant in range(1,2):
+            #trunk start (2 x 3)
+            for steps in range(3):
+                for steps in range(2):
+                    autogui.moveTo(x,y)
+                    y -= 1
+                x += side
+            # trunk end
+            y += 1
+        else:
+            #trunk start (3 x 2)
+            for Steps in range(2):
+                for _ in range(3):
+                    autogui.moveTo(x,y)
+                    y -= 1
+                x += side
+            y += 1            
+            # trunk end
+
+        #draw the leaves:
+        autogui.moveTo(x+side,y)
+        next(self.Colors_A).click()
+        autogui.moveTo(x-side,y)
+        autogui.moveTo(x+side+side+side,y)
+        autogui.moveTo(x-side-side-side,y)
+        autogui.moveTo(x,y-1)
+        autogui.moveTo(x-side,y-1)
+        autogui.moveTo(x+side,y-1)
+        autogui.moveTo(x-side*2,y-1)
+        autogui.moveTo(x+side*2,y-1)
+        autogui.moveTo(x,y-2)
+        autogui.moveTo(x-side,y-2)
+        autogui.moveTo(x+side,y-2)
+        keyboard.release('space')
+        self.lastside = side #invert side so the next tree faces the opposite direction
+
+    def tree_1(self,side): #normal style tree that using every color for the leaves based on colorshift()
+        x,y = autogui.position()
+        next(self.Colors_D).click()
+        keyboard.press('space')
+        for _ in range(3):
+            autogui.moveTo(x,y)
+            y-=1
+        if side > 0:
+            autogui.moveTo(x,y)
+            y-=1
+        autogui.moveTo(x, y)
+        self.colorshift() #leaf color
+        autogui.moveTo(x-side,y)
+        autogui.moveTo(x+side,y)
+        autogui.moveTo(x,y-1)
+        y = y - 1
+        autogui.moveTo(x-side,y)
+        autogui.moveTo(x+side,y)
+        autogui.moveTo(x,y-1)
+        if side > 0:
+            y -= 1
+            autogui.moveTo(x-side,y)
+            autogui.moveTo(x+side,y)
+            autogui.moveTo(x,y-1)
+        keyboard.release('space')    
+    
+    def mongus(self,side): #draw an among us character
+        if self.lastside2 == side:
+            side = -side
+        next(self.Colors_ALL).click()
+        x,y = autogui.position()
+        keyboard.press('space')
+        for _ in range(2):
+            autogui.moveTo(x, y)
+            autogui.moveTo(x+side+side, y)
+            y -= 1
+        for _ in range(2):
+            autogui.moveTo(x, y)
+            autogui.moveTo(x, y+1)
+            x += side
+        y += 2
+        for _ in range(2):
+            autogui.moveTo(x, y)
+            autogui.moveTo(x+side, y-2)
+            y -= 1
+        for _ in range(2):
+            autogui.moveTo(x, y)
+            y -= 1
+        for _ in range(3):
+            autogui.moveTo(x, y)
+            x -= side
+        x += side*2
+        y += 1
+        autogui.moveTo(x,y)
+        self.color_dict.get("blue7").click()
+        autogui.moveTo(x-side,y)
+        autogui.moveTo(x-side,y)
+        keyboard.release('space')
+        self.lastside2 = side
+
 def print_Controls():
     print ("""
     -Controls-')
@@ -108,143 +218,17 @@ def print_Controls():
     J: hold J to stop drawing random trees or Among Us characters.
     ESC: hold Escape to halt the script.
     """)
+    
 
-def vectoring():
-    global vector #for use in direction of trees, among other things
-    vector = next(vector_cycle)
-    
-def tree_2(): #palm tree
-    global z, x, y, vector, thecolor # x, y for coords, z is for facing direction
-    #lets get a vector variable for later
-    vectoring() #returns 1, 2, 3, or 4
-    brown1.click()
-    keyboard.press('space')
-    #build the tree:
-    if vector == 1 or vector == 2:
-        #trunk start (2 x 3)
-        for _ in range(2):
-            autogui.moveTo(x,y)
-            y -= 1
-        x += z
-        for _ in range(2):
-            autogui.moveTo(x,y)
-            y -= 1
-        x += z
-        for _ in range(2):
-            autogui.moveTo(x,y)
-            y -= 1
-        y += 1
-        # trunk end
-    else:
-        #trunk start (3 x 2)
-        for _ in range(3):
-            autogui.moveTo(x,y)
-            y -= 1
-        x += z
-        for _ in range(3):
-            autogui.moveTo(x,y)
-            y -= 1
-        y += 1            
-        # trunk end        
-    #draw the leaves:
-    autogui.moveTo(x+z,y)
-    whichcolor1()
-    thecolor.click()
-    autogui.moveTo(x-z,y)
-    autogui.moveTo(x+z+z+z,y)
-    autogui.moveTo(x-z-z-z,y)
-    autogui.moveTo(x,y-1)
-    autogui.moveTo(x-z,y-1)
-    autogui.moveTo(x+z,y-1)
-    autogui.moveTo(x-z*2,y-1)
-    autogui.moveTo(x+z*2,y-1)
-    autogui.moveTo(x,y-2)
-    autogui.moveTo(x-z,y-2)
-    autogui.moveTo(x+z,y-2)
-    keyboard.release('space')
-    z = -z #invert z so the next tree faces the opposite direction
-    
-def tree_1(): #normal style tree that using every color for the leaves based on colorshift()
-    global z, x, y, vector, thecolor
-    vectoring()
-    whichcolor5()#tree trunk colors
-    autogui.moveTo(x,y)
-    keyboard.press('space')
-    for _ in range(3):
-        autogui.moveTo(x,y)
-        y-=1
-    if z > 0:
-        for _ in range(1):
-            autogui.moveTo(x,y)
-            y-=1
-    autogui.moveTo(x, y)
-    colorshift() #leaf color, you can use whichcolor1() here for example or the other whichcolor() functions to change which color the leaves will be
-    autogui.moveTo(x-z,y)
-    autogui.moveTo(x+z,y)
-    autogui.moveTo(x,y-1)
-    y = y - 1
-    autogui.moveTo(x-z,y)
-    autogui.moveTo(x+z,y)
-    autogui.moveTo(x,y-1)
-    if z > 0:
-        y -= 1
-        autogui.moveTo(x-z,y)
-        autogui.moveTo(x+z,y)
-        autogui.moveTo(x,y-1)
-    keyboard.release('space')
-    
-def mongus(): #draw an among us character
-    global z, thecolor, x, y
-    whichcolor8()
-    autogui.moveTo(x,y)
-    keyboard.press('space')
-    for _ in range(2):
-        autogui.moveTo(x, y)
-        autogui.moveTo(x+z+z, y)
-        y -= 1
-    for _ in range(2):
-        autogui.moveTo(x, y)
-        autogui.moveTo(x, y+1)
-        x += z
-    y = y + 2
-    for _ in range(2):
-        autogui.moveTo(x, y)
-        autogui.moveTo(x+z, y-2)
-        y -= 1
-    for _ in range(2):
-        autogui.moveTo(x, y)
-        y -= 1
-    for _ in range(3):
-        autogui.moveTo(x, y)
-        x -= z
-    x += z*2
-    y += 1
-    autogui.moveTo(x,y)
-    blue7.click()
-    autogui.moveTo(x-z,y)
-    autogui.moveTo(x-z,y)
-    keyboard.release('space')
-    z = -z #next amongus will face other direction if you invert z
-    
 ### Controls Section ###
-def mouse_handler():
-    global x, y, z, tX, tY, bX, bY, pixx, pixx2
+def mouse_handler(Bot):
     x, y = autogui.position()
     if keyboard.is_pressed("q"):
-        try:
-            whichcolor8()
-        except:
-            reload_colors()
+        next(Bot.Colors_ALL).click
     if keyboard.is_pressed("e"):
-        try:
-            mongus()
-        except:
-            reload_colors()
+        Bot.mongus()
     if keyboard.is_pressed("w") == True or keyboard.is_pressed("a") == True or keyboard.is_pressed("s") == True or keyboard.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
-        try:
-            rainbowbrush()
-        except:
-            reload_colors()
+        Bot.rainbowbrush()
     #these next two hotkeys are needed to set your square for random tree and among us drawing, first press Y for your top left corner, and then U for your bottom left corner
     #and then you can use R to draw random trees or K to draw random Among Us characters
     if keyboard.is_pressed("y"):
@@ -253,46 +237,31 @@ def mouse_handler():
         bX, bY = autogui.position()
     if keyboard.is_pressed("r"):#random tree, make sure your zoom is at 1 or won't scale correctly
         while True:
-            if random.random() > 0.5:
-                z = 1
-            else:
-                z = -1
+            side = int(random.choice(["-1","1"]))
             x = random.randrange(tX,bX)
             y = random.randrange(tY,bY)
             autogui.moveTo(x,y)
-            pixx = autogui.pixel(x+z, y+z)
-            pixx2 = autogui.pixel(x-z*4, y-5)
+            pixx = autogui.pixel(x+side, y+side)
+            pixx2 = autogui.pixel(x-side*4, y-5)
             if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
                 if random.random() > 0.75:
-                    try:
-                        tree_2()
-                    except:
-                        reload_colors()
+                    Bot.tree_2()
                 else:
-                    try:
-                        tree_1()
-                    except:
-                        reload_colors()
+                    Bot.tree_1()
             else:                
                 pass                
             if keyboard.is_pressed("j"):#hold down on J to end the random drawing
                 break        
     if keyboard.is_pressed("k"):#random amongus, make sure your zoom is at 1 or won't scale correctly
         while True:
-            if random.random() > 0.5:
-                z = 1
-            else:
-                z = -1
+            side = int(random.choice(["-1","1"]))
             x = random.randrange(tX,bX)
             y = random.randrange(tY,bY)
             autogui.moveTo(x,y)
-            pixx = autogui.pixel(x+z, y+z)
-            pixx2 = autogui.pixel(x-z*4, y-5)
+            pixx = autogui.pixel(x+side, y+side)
+            pixx2 = autogui.pixel(x-side*4, y-5)
             if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
-                try:
-                    mongus()
-                except:
-                    reload_colors()
+                Bot.mongus()
             else:                
                 pass                
             if keyboard.is_pressed("j"):#hold down on J to end the random drawing
@@ -300,6 +269,9 @@ def mouse_handler():
     if keyboard.is_pressed('esc'):#hold esc to halt the script in case of emergency, you will need to run the script again to use it again if you do this
         mouse.unhook(mouse_handler)
         quit()
-        
 ### End Controls ##        
-mouse.hook(mouse_handler)### program starting now ###
+
+### program starting now ###
+Thing = Bot()
+print_Controls()
+mouse.hook(mouse_handler(Thing))
