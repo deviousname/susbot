@@ -11,10 +11,6 @@ import keyboard
 import mouse
 import pyautogui as autogui
 
-#other
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-
 class Bot(): 
     def __init__ (self,username,password):
         self.username = username
