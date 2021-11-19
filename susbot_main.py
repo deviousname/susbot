@@ -2,10 +2,8 @@
 #feel free to change it to suit your needs *you do not have permission to sell any code derived from this code: GNU Affero General Public License v3.0
 
 #this first import is where you store your username and password to login to Reddit(required), found in: crewmate.py
-from crewmate import username, password
-
+import crewmate
 import random
-import time
 from itertools import cycle
 
 #Controll imports
@@ -20,7 +18,7 @@ from selenium.webdriver.common.by import By
 class Bot(): 
     def __init__ (self,username,password):
         self.username = username
-        self.password = password
+        self.password = password    
         self.driver = webdriver.Chrome() #you need chromedriver.exe: https://chromedriver.chromium.org/downloads
         self.login()
         self.colors = self.get_colors()
@@ -278,6 +276,6 @@ def mouse_handler(Bot):
 ### End Controls ##        
 
 ### program starting now ###
-Thing = Bot()
+Thing = Bot(crewmate.username,crewmate.password)
 print_Controls()
 mouse.hook(mouse_handler(Thing))
