@@ -1,454 +1,277 @@
 #made by deviousname, someone better than me can clean this code up and improve upon it
 #feel free to change it to suit your needs *you do not have permission to sell any code derived from this code: GNU Affero General Public License v3.0
-import crewmate #this first import is where you store your username and password to login to Reddit(required), found in: crewmate.py
-import pyautogui as p
-import keyboard as k
-import time as t
-import random as r
-import mouse as m
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+
+#this first import is where you store your username and password to login to Reddit(required), found in: crewmate.py
+import crewmate
+import random
 from itertools import cycle
-driver = webdriver.Chrome() #you need chromedriver.exe: https://chromedriver.chromium.org/downloads
 
-#some vars for later:
-z, vector = 1, 0
-thecolor = None
-tX, bX, tY, bY = None, None, None, None  
+#Controll imports
+import keyboard
+import mouse
+import pyautogui as autogui
 
-#login sequence, using Reddit, set your username and pass for Reddit in crewmate.py's variables 'username' and 'password'
-print ('Logging in now through Reddit. If you get an error you may need to set your name and password in crewmate.py')
-driver.get("https://pixelplace.io/api/sso.php?type=2&action=login")
-driver.find_element_by_id('loginUsername').send_keys(crewmate.username)
-driver.find_element_by_id('loginPassword').send_keys(crewmate.password)
-driver.find_elements_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4].click()
+class Bot(): 
+    def __init__ (self,username,password):
+        self.username = username
+        self.password = password    
+        self.driver = webdriver.Chrome() #you need chromedriver.exe: https://chromedriver.chromium.org/downloads
+        self.login()
+        self.colors = self.get_colors()
 
-failed = None
-while True:
-    try:
-        driver.find_elements_by_xpath('/html/body/div[3]/div/div[2]/form/div/input')[0].click()
-        failed = False
-    except:
-        failed = True
-    if failed == False:
-        break
-    
-print ('All done logging in, ready to paint.')
-#end login
-
-print ('-Controls-')
-print ('Q: Cycle through all colors.')
-print ('WASD: cycles different color palletes depending on which combination you use, for example W + A is yellows.')
-print ('E: Draw an Among Us character, make sure your zoom level is 1 on pixelplace. Note: it only works when you are moving your mouse cursor slighty when you press it.')
-print ('For random drawing, press Y on the top left of your zone, and U on the bottom left then use either R to draw random trees or K to draw random Among Us characters.')
-print ('J: hold J to stop drawing random trees or Among Us characters.')
-print ('ESC: hold Escape to halt the script.')
-
-#setting up the colors for fast color switching:
-def reload_colors(): #in order for you to switch colors easily, these needed to be loaded properly
-    global white,grey1,grey2,grey3,grey4,black,green1,green2,green3,green5,yellow1,yellow2,yellow3,yellow4,brown1,brown2,brown3,red1,red2,red3,brown4,peach1,peach2,peach3,pink1,pink2,pink3,pink4,blue1,blue2,blue3,blue4,blue5,blue6,blue7, colors_all, color0,  color1, color2, color3, color4, color5, color6, color7, colors_cycle0, colors_cycle1, colors_cycle2, colors_cycle3, colors_cycle4, colors_cycle5, colors_cycle6, colors_cycle7, colors_cycle8
-    white = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[0]
-    grey1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[1]
-    grey2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[2]
-    grey3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[3]
-    grey4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[4]
-    black = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[5]
-    green1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[6]
-    green2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[7]
-    green3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[8]
-    green5 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[10]
-    yellow1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[11]
-    yellow2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[12]
-    yellow3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[13]
-    yellow4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[14]
-    brown1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[15]
-    brown2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[16]
-    brown3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[17]
-    red1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[18] 
-    red2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[19]
-    red3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[20]
-    brown4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[22]
-    peach1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[23]
-    peach2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[24]
-    peach3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[25]
-    pink1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[26]
-    pink2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[27]
-    pink3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[28]
-    pink4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[29]
-    blue1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[31]
-    blue2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[32]
-    blue3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[33]
-    blue4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[34]
-    blue5 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[35]
-    blue6 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[36]
-    blue7 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[37]    
-    color8 = [white,grey1,grey2,grey3,grey4,black,green1,green2,
-        green3,green5,yellow1,yellow2,yellow3,yellow4,
-        brown1,brown2,brown3,red1,red2,red3,brown4,peach1,
-        peach2,peach3,pink1,pink2,pink3,pink4,
-        blue1,blue2,blue3,blue4,blue5,blue6,blue7]
-    #if you want to add colors to your WASD palette, add the colors into the lists below: 
-    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7]
-    color6 = [black, white]
-    color5 = [brown1, brown2, brown3, brown4, grey4, peach3, white]
-    color4 = [brown1, brown2, brown3, brown4]
-    color3 = [grey4, grey3, grey2, grey1]
-    color2 = [yellow1, yellow2, yellow3, yellow4]
-    color1 = [green1, green2, green3, green5]
-    color0 = [red1, red2, red3]
-    #the list above is linked to the whichcolor() functions further below
-    colors_cycle8 = cycle(color8)
-    colors_cycle7 = cycle(color7)
-    colors_cycle6 = cycle(color6)
-    colors_cycle5 = cycle(color5)
-    colors_cycle4 = cycle(color4)
-    colors_cycle3 = cycle(color3)
-    colors_cycle2 = cycle(color2)
-    colors_cycle1 = cycle(color1)
-    colors_cycle0 = cycle(color0)  
-reload_colors()
-
-def whichcolor8(): # All colors
-    global thecolor
-    thecolor = next(colors_cycle8)
-    thecolor.click() 
-
-def whichcolor7(): # Blue colors
-    global thecolor
-    thecolor = next(colors_cycle7)
-    thecolor.click()
-
-def whichcolor6(): # Black and white
-    global thecolor
-    thecolor = next(colors_cycle6)
-    thecolor.click()    
-
-def whichcolor5(): # Tree trunk colors
-    global thecolor
-    thecolor = next(colors_cycle5)
-    thecolor.click()    
-
-def whichcolor4(): # Brown colors
-    global thecolor
-    thecolor = next(colors_cycle4)
-    thecolor.click()    
-
-def whichcolor3(): # Grey colors
-    global thecolor
-    thecolor = next(colors_cycle3)
-    thecolor.click()    
-
-def whichcolor2(): # Yellow colors
-    global thecolor
-    thecolor = next(colors_cycle2)
-    thecolor.click()    
-
-def whichcolor1(): # Green colors
-    global thecolor
-    thecolor = next(colors_cycle1)
-    thecolor.click()    
-
-def whichcolor0(): # Red colors
-    global thecolor
-    thecolor = next(colors_cycle0)
-    thecolor.click()
-
-def rainbowbrush(): #this is how the key combos work, for example if you press A and W it will run whichcolor2() aka the yellow colors
-    if k.is_pressed("s") == True or k.is_pressed("a") == True or k.is_pressed("w") == True or k.is_pressed("d") == True:        
-        #only A
-        if k.is_pressed("a") == True and k.is_pressed("s") != True and k.is_pressed("w") != True and k.is_pressed("d") != True:
-            whichcolor1()
-        #only S
-        if k.is_pressed("s") == True and k.is_pressed("a") != True and k.is_pressed("w") != True and k.is_pressed("d") != True:
-            whichcolor0()    
-        #only AW
-        if k.is_pressed("a") == True and k.is_pressed("w") == True and k.is_pressed("d") != True and k.is_pressed("s") != True:
-            whichcolor2()
-        #only W
-        if k.is_pressed("w") == True and k.is_pressed("a") != True and k.is_pressed("s") != True and k.is_pressed("d") != True:
-            whichcolor3()
-        #only WD
-        if k.is_pressed("w") == True and k.is_pressed("d") == True and k.is_pressed("s") != True and k.is_pressed("a") != True:
-            whichcolor4()
-        #only D
-        if k.is_pressed("d") == True and k.is_pressed("s") != True and k.is_pressed("a") != True and k.is_pressed("w") != True:
-            whichcolor5()
-        #only DS
-        if k.is_pressed("d") == True and k.is_pressed("s") == True and k.is_pressed("a") != True and k.is_pressed("w") != True:
-            whichcolor6()
-        #only SA
-        if k.is_pressed("s") == True and k.is_pressed("a") == True and k.is_pressed("d") != True and k.is_pressed("w") != True:
-            whichcolor7()
-            
-vectors = [1,2,3,4];vector_cycle = cycle(vectors)
-def vectoring():
-    global vector #for use in direction of trees, among other things
-    vector = next(vector_cycle)
+    def login(self):
+        #login sequence, using Reddit, set your username and pass for Reddit in crewmate.py's variables 'username' and 'password'
+        print ('Logging in now through Reddit. If you get an error you may need to set your name and password in crewmate.py')
+        self.driver.get("https://pixelplace.io/api/sso.php?type=2&action=login")
+        self.driver.find_element_by_id('loginUsername').send_keys(self.username)
+        self.driver.find_element_by_id('loginPassword').send_keys(self.password)
+        self.driver.find_elements_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4].click()
         
-def colorshift(): # this function is still a work in progress and you can set it in the controls, tree leafs are a good use for this, it paints the next color on the list after checking which color is under your mouse cursor
-    global thecolor, pixy, z, x, y  
-    pixy = p.pixel(x + z, y - z) #check nearby pixel color
-    if pixy == (255,255,255): # paints the next color on the list based on the color it sees
-        thecolor = grey1        
-    elif pixy == (196,196,196):
-        thecolor = grey2        
-    elif pixy == (136,136,136):
-        thecolor = grey3        
-    elif pixy == (85,85,85):
-        thecolor = grey4        
-    elif pixy == (34,34,34):
-        thecolor = black        
-    elif pixy == (0,0,0):
-        thecolor = green1        
-    elif pixy == (0,102,0):
-        thecolor = green2        
-    elif pixy == (34,177,76):
-        thecolor = green3    
-    elif pixy == (81,225,25):
-        thecolor = green5        
-    elif pixy == (148,224,68):
-        thecolor = yellow1        
-    elif pixy == (251,255,91):
-        thecolor = yellow2        
-    elif pixy == (229,217,0):
-        thecolor = yellow3        
-    elif pixy == (230,190,12):
-        thecolor = yellow4        
-    elif pixy == (229,149,0):
-        thecolor = brown1        
-    elif pixy == (160,106,66):
-        thecolor = brown2        
-    elif pixy == (153,90,26):
-        thecolor = brown3        
-    elif pixy == (99,60,31):
-        thecolor = red1        
-    elif pixy == (107,0,0):
-        thecolor = red2        
-    elif pixy == (159,0,0):
-        thecolor = red3        
-    elif pixy == (255,57,4):
-        thecolor = brown4        
-    elif pixy == (187,79,0):
-        thecolor = peach1        
-    elif pixy == (255,117,95):
-        thecolor = peach2        
-    elif pixy == (255,196,159):
-        thecolor = peach3        
-    elif pixy == (255,223,204):
-        thecolor = pink1        
-    elif pixy == (255,167,209):
-        thecolor = pink2        
-    elif pixy == (207,110,228):
-        thecolor = pink3        
-    elif pixy == (236,8,236):
-        thecolor = pink4        
-    elif pixy == (81,0,255):
-        thecolor = blue1        
-    elif pixy == (2,7,99):
-        thecolor = blue2        
-    elif pixy == (0,0,234):
-        thecolor = blue3        
-    elif pixy == (4,75,255):
-        thecolor = blue4        
-    elif pixy == (101,131,207):
-        thecolor = blue5        
-    elif pixy == (54,186,255):
-        thecolor = blue6        
-    elif pixy == (0,131,199):
-        thecolor = blue7        
-    elif pixy == (69,255,200):
-        thecolor = white
-    else:
-        pass        
-    thecolor.click() #once it knows what color to click, clicks it
-    
-def tree_2(): #palm tree
-    global z, x, y, vector, thecolor # x, y for coords, z is for facing direction
-    #lets get a vector variable for later
-    vectoring() #returns 1, 2, 3, or 4
-    brown1.click()
-    k.press('space')
-    #build the tree:
-    if vector == 1 or vector == 2:
-        #trunk start (2 x 3)
-        for _ in range(2):
-            p.moveTo(x,y)
-            y -= 1
-        x += z
-        for _ in range(2):
-            p.moveTo(x,y)
-            y -= 1
-        x += z
-        for _ in range(2):
-            p.moveTo(x,y)
-            y -= 1
-        y += 1
-        # trunk end
-    else:
-        #trunk start (3 x 2)
+        #Simon - I suggest waiting on the button that needs to be pressed to appear instead of this
+        
+        failed = None
+        while True:
+            try:
+                self.driver.find_elements_by_xpath('/html/body/div[3]/div/div[2]/form/div/input')[0].click()
+                failed = False
+            except:
+                failed = True
+            if failed == False:
+                break
+        
+        print ('All done logging in, ready to paint.')
+        #end login
+
+    #Simon - Refactored Colors into getting saved into a dictionary via a for loop. Also renamed cycles according to Keystrokes
+
+    def get_colors(self): 
+            #setting up the colors for fast color switching:
+            self.color_dict = {}
+            for color_name,x in zip(["white","grey1","grey2","grey3","grey4","black","green1","green2","green3","green5","yellow1","yellow2","yellow3","yellow4","brown1","brown2","brown3","red1","red2","red3","brown4","peach1","peach2","peach3","pink1","pink2","pink3","pink4","blue1","blue2","blue3","blue4","blue5","blue6","blue7"],range(0,34)):
+                path = self.driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[x]
+                self.color_dict.update({f"{color_name}":path})
+            self.Colors_W =  cycle([self.color_dict.get("grey4"), self.color_dict.get("grey3"), self.color_dict.get("grey2"), self.color_dict.get("grey1")])
+            self.Colors_A =  cycle([self.color_dict.get("green1"), self.color_dict.get("green2"), self.color_dict.get("green3"), self.color_dict.get("green5")])
+            self.Colors_S =  cycle([self.color_dict.get("red1"), self.color_dict.get("red2"), self.color_dict.get("red3")])
+            self.Colors_D =  cycle([self.color_dict.get("brown1"), self.color_dict.get("brown2"), self.color_dict.get("brown3"), self.color_dict.get("brown4"), self.color_dict.get("grey4"), self.color_dict.get("peach3"), self.color_dict.get("white")])
+            self.Colors_AW = cycle([self.color_dict.get("yellow1"), self.color_dict.get("yellow2"), self.color_dict.get("yellow3"), self.color_dict.get("yellow4")])
+            self.Colors_WD = cycle([self.color_dict.get("brown1"), self.color_dict.get("brown2"), self.color_dict.get("brown3"), self.color_dict.get("brown4")])
+            self.Colors_DS = cycle([self.color_dict.get("black"), self.color_dict.get("white")])
+            self.Colors_SA = cycle([self.color_dict.get("blue1"),self.color_dict.get("blue2"),self.color_dict.get("blue3"),self.color_dict.get("blue4"),self.color_dict.get("blue5"),self.color_dict.get("blue6"),self.color_dict.get("blue7")])
+            self.Colors_ALL = cycle([self.color_dict.get("white"),self.color_dict.get("grey1"),self.color_dict.get("grey2"),self.color_dict.get("grey3"),self.color_dict.get("grey4"),self.color_dict.get("black"),self.color_dict.get("green1"),self.color_dict.get("green2"),self.color_dict.get("green3"),self.color_dict.get("green5"),self.color_dict.get("yellow1"),self.color_dict.get("yellow2"),self.color_dict.get("yellow3"),self.color_dict.get("yellow4"),self.color_dict.get("brown1"),self.color_dict.get("brown2"),self.color_dict.get("brown3"),self.color_dict.get("red1"),self.color_dict.get("red2"),self.color_dict.get("red3"),self.color_dict.get("brown4"),self.color_dict.get("peach1"),self.color_dict.get("peach2"),self.color_dict.get("peach3"),self.color_dict.get("pink1"),self.color_dict.get("pink2"),self.color_dict.get("pink3"),self.color_dict.get("pink4"),self.color_dict.get("blue1"),self.color_dict.get("blue2"),self.color_dict.get("blue3"),self.color_dict.get("blue4"),self.color_dict.get("blue5"),self.color_dict.get("blue6"),self.color_dict.get("blue7")])
+
+
+
+
+    #Simon - Adapted the new Color System and compacted it a bit
+
+    #this is how the key combos work, for example if you press A and W it will run whichcolor2() aka the yellow colors
+    def rainbowbrush(self): 
+        if keyboard.is_pressed("s") or keyboard.is_pressed("a") or keyboard.is_pressed("w") == True or keyboard.is_pressed("d") == True:        
+            #only A
+            if keyboard.is_pressed("a") == True and keyboard.is_pressed("s") != True and keyboard.is_pressed("w") != True and keyboard.is_pressed("d") != True:
+                next(self.Colors_A).click()
+            #only S
+            if keyboard.is_pressed("s") == True and keyboard.is_pressed("a") != True and keyboard.is_pressed("w") != True and keyboard.is_pressed("d") != True:
+                next(self.Colors_S).click()
+            #only AW
+            if keyboard.is_pressed("a") == True and keyboard.is_pressed("w") == True and keyboard.is_pressed("d") != True and keyboard.is_pressed("s") != True:
+                next(self.Colors_AW).click()
+            #only W
+            if keyboard.is_pressed("w") == True and keyboard.is_pressed("a") != True and keyboard.is_pressed("s") != True and keyboard.is_pressed("d") != True:
+                next(self.Colors_W).click()
+            #only WD
+            if keyboard.is_pressed("w") == True and keyboard.is_pressed("d") == True and keyboard.is_pressed("s") != True and keyboard.is_pressed("a") != True:
+                next(self.Colors_WD).click()
+            #only D
+            if keyboard.is_pressed("d") == True and keyboard.is_pressed("s") != True and keyboard.is_pressed("a") != True and keyboard.is_pressed("w") != True:
+                next(self.Colors_D).click()
+            #only DS
+            if keyboard.is_pressed("d") == True and keyboard.is_pressed("s") == True and keyboard.is_pressed("a") != True and keyboard.is_pressed("w") != True:
+                next(self.Colors_DS).click()
+            #only SA
+            if keyboard.is_pressed("s") == True and keyboard.is_pressed("a") == True and keyboard.is_pressed("d") != True and keyboard.is_pressed("w") != True:
+                next(self.Colors_SA).click()
+
+    # this function is still a work in progress and you can set it in the controls, tree leafs are a good use for this, it paints the next color on the list after checking which color is under your mouse cursor
+    def colorshift(self): 
+        x,y = autogui.position()
+        pixy = autogui.pixel(x,y) #check nearby pixel color
+        colorshift_dict = {(255,255,255):self.color_dict.get("grey1"),(196,196,196):self.color_dict.get("grey2"),(136,136,136):self.color_dict.get("grey3"),(85,85,85):self.color_dict.get("grey4"),(34,34,34):self.color_dict.get("black"),(0,0,0):self.color_dict.get("green1"),(0,102,0):self.color_dict.get("green2"),(34,177,76):self.color_dict.get("green3"),(81,225,25):self.color_dict.get("green5"),(148,224,68):self.color_dict.get("yellow1"),(251,255,91):self.color_dict.get("yellow2"),(229,217,0):self.color_dict.get("yellow3"),(230,190,12):self.color_dict.get("yellow4"),(229,149,0):self.color_dict.get("brown1"),(160,106,66):self.color_dict.get("brown2"),(153,90,26):self.color_dict.get("brown3"),(99,60,31):self.color_dict.get("red1"),(107,0,0):self.color_dict.get("red2"),(159,0,0):self.color_dict.get("red3"),(255,57,4):self.color_dict.get("brown4"),(187,79,0):self.color_dict.get("peach1"),(255,117,95):self.color_dict.get("peach2"),(255,196,159):self.color_dict.get("peach3"),(255,223,204):self.color_dict.get("pink1"),(255,167,209):self.color_dict.get("pink2"),(207,110,228):self.color_dict.get("pink3"),(236,8,236):self.color_dict.get("pink4"),(81,0,255):self.color_dict.get("blue1"),(2,7,99):self.color_dict.get("blue2"),(0,0,234):self.color_dict.get("blue3"),(4,75,255):self.color_dict.get("blue4"),(101,131,207):self.color_dict.get("blue5"),(54,186,255):self.color_dict.get("blue6"),(0,131,199):self.color_dict.get("blue7"),(69,255,200):self.color_dict.get("white")}
+        try:
+            colorshift_dict.get(pixy).click()
+        except:
+            pass
+
+    def tree_2(self,side): #palm tree
+        if self.lastside == side:
+            side = -side
+        x,y = autogui.position()
+        #vector is value between 1 and 4
+        self.color_dict.get("brown1").click()
+        keyboard.press('space')
+        #build the tree:
+        variant = random.randint(1,4)
+        if variant in range(1,2):
+            #trunk start (2 x 3)
+            for steps in range(3):
+                for steps in range(2):
+                    autogui.moveTo(x,y)
+                    y -= 1
+                x += side
+            # trunk end
+            y += 1
+        else:
+            #trunk start (3 x 2)
+            for Steps in range(2):
+                for _ in range(3):
+                    autogui.moveTo(x,y)
+                    y -= 1
+                x += side
+            y += 1            
+            # trunk end
+
+        #draw the leaves:
+        autogui.moveTo(x+side,y)
+        next(self.Colors_A).click()
+        autogui.moveTo(x-side,y)
+        autogui.moveTo(x+side+side+side,y)
+        autogui.moveTo(x-side-side-side,y)
+        autogui.moveTo(x,y-1)
+        autogui.moveTo(x-side,y-1)
+        autogui.moveTo(x+side,y-1)
+        autogui.moveTo(x-side*2,y-1)
+        autogui.moveTo(x+side*2,y-1)
+        autogui.moveTo(x,y-2)
+        autogui.moveTo(x-side,y-2)
+        autogui.moveTo(x+side,y-2)
+        keyboard.release('space')
+        self.lastside = side #invert side so the next tree faces the opposite direction
+
+    def tree_1(self,side): #normal style tree that using every color for the leaves based on colorshift()
+        x,y = autogui.position()
+        next(self.Colors_D).click()
+        keyboard.press('space')
         for _ in range(3):
-            p.moveTo(x,y)
-            y -= 1
-        x += z
-        for _ in range(3):
-            p.moveTo(x,y)
-            y -= 1
-        y += 1            
-        # trunk end        
-    #draw the leaves:
-    p.moveTo(x+z,y)
-    whichcolor1()
-    thecolor.click()
-    p.moveTo(x-z,y)
-    p.moveTo(x+z+z+z,y)
-    p.moveTo(x-z-z-z,y)
-    p.moveTo(x,y-1)
-    p.moveTo(x-z,y-1)
-    p.moveTo(x+z,y-1)
-    p.moveTo(x-z*2,y-1)
-    p.moveTo(x+z*2,y-1)
-    p.moveTo(x,y-2)
-    p.moveTo(x-z,y-2)
-    p.moveTo(x+z,y-2)
-    k.release('space')
-    z = -z #invert z so the next tree faces the opposite direction
-    
-def tree_1(): #normal style tree that using every color for the leaves based on colorshift()
-    global z, x, y, vector, thecolor
-    vectoring()
-    whichcolor5()#tree trunk colors
-    p.moveTo(x,y)
-    k.press('space')
-    for _ in range(3):
-        p.moveTo(x,y)
-        y-=1
-    if z > 0:
-        for _ in range(1):
-            p.moveTo(x,y)
+            autogui.moveTo(x,y)
             y-=1
-    p.moveTo(x, y)
-    colorshift() #leaf color, you can use whichcolor1() here for example or the other whichcolor() functions to change which color the leaves will be
-    p.moveTo(x-z,y)
-    p.moveTo(x+z,y)
-    p.moveTo(x,y-1)
-    y = y - 1
-    p.moveTo(x-z,y)
-    p.moveTo(x+z,y)
-    p.moveTo(x,y-1)
-    if z > 0:
-        y -= 1
-        p.moveTo(x-z,y)
-        p.moveTo(x+z,y)
-        p.moveTo(x,y-1)
-    k.release('space')
+        if side > 0:
+            autogui.moveTo(x,y)
+            y-=1
+        autogui.moveTo(x, y)
+        self.colorshift() #leaf color
+        autogui.moveTo(x-side,y)
+        autogui.moveTo(x+side,y)
+        autogui.moveTo(x,y-1)
+        y = y - 1
+        autogui.moveTo(x-side,y)
+        autogui.moveTo(x+side,y)
+        autogui.moveTo(x,y-1)
+        if side > 0:
+            y -= 1
+            autogui.moveTo(x-side,y)
+            autogui.moveTo(x+side,y)
+            autogui.moveTo(x,y-1)
+        keyboard.release('space')    
     
-def mongus(): #draw an among us character
-    global z, thecolor, x, y
-    whichcolor8()
-    p.moveTo(x,y)
-    k.press('space')
-    for _ in range(2):
-        p.moveTo(x, y)
-        p.moveTo(x+z+z, y)
-        y -= 1
-    for _ in range(2):
-        p.moveTo(x, y)
-        p.moveTo(x, y+1)
-        x += z
-    y = y + 2
-    for _ in range(2):
-        p.moveTo(x, y)
-        p.moveTo(x+z, y-2)
-        y -= 1
-    for _ in range(2):
-        p.moveTo(x, y)
-        y -= 1
-    for _ in range(3):
-        p.moveTo(x, y)
-        x -= z
-    x += z*2
-    y += 1
-    p.moveTo(x,y)
-    blue7.click()
-    p.moveTo(x-z,y)
-    p.moveTo(x-z,y)
-    k.release('space')
-    z = -z #next amongus will face other direction if you invert z
+    def mongus(self,side): #draw an among us character
+        if self.lastside2 == side:
+            side = -side
+        next(self.Colors_ALL).click()
+        x,y = autogui.position()
+        keyboard.press('space')
+        for _ in range(2):
+            autogui.moveTo(x, y)
+            autogui.moveTo(x+side+side, y)
+            y -= 1
+        for _ in range(2):
+            autogui.moveTo(x, y)
+            autogui.moveTo(x, y+1)
+            x += side
+        y += 2
+        for _ in range(2):
+            autogui.moveTo(x, y)
+            autogui.moveTo(x+side, y-2)
+            y -= 1
+        for _ in range(2):
+            autogui.moveTo(x, y)
+            y -= 1
+        for _ in range(3):
+            autogui.moveTo(x, y)
+            x -= side
+        x += side*2
+        y += 1
+        autogui.moveTo(x,y)
+        self.color_dict.get("blue7").click()
+        autogui.moveTo(x-side,y)
+        autogui.moveTo(x-side,y)
+        keyboard.release('space')
+        self.lastside2 = side
+
+def print_Controls():
+    print ("""
+    -Controls-')
+    Q: Cycle through all colors.
+    WASD: cycles different color palletes depending on which combination you use, for example W + A is yellows.
+    E: Draw an Among Us character, make sure your zoom level is 1 on pixelplace. Note: it only works when you are moving your mouse cursor slighty when you press it.
+    For random drawing, press Y on the top left of your zone, and U on the bottom left then use either R to draw random trees or K to draw random Among Us characters.
+    J: hold J to stop drawing random trees or Among Us characters.
+    ESC: hold Escape to halt the script.
+    """)
     
+
 ### Controls Section ###
-def mouse_handler(event):
-    global x, y, z, tX, tY, bX, bY, pixx, pixx2
-    x, y = p.position()
-    if k.is_pressed("q"):
-        try:
-            whichcolor8()
-        except:
-            reload_colors()
-    if k.is_pressed("e"):
-        try:
-            mongus()
-        except:
-            reload_colors()
-    if k.is_pressed("w") == True or k.is_pressed("a") == True or k.is_pressed("s") == True or k.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
-        try:
-            rainbowbrush()
-        except:
-            reload_colors()
+def mouse_handler(Bot):
+    x, y = autogui.position()
+    if keyboard.is_pressed("q"):
+        next(Bot.Colors_ALL).click
+    if keyboard.is_pressed("e"):
+        Bot.mongus()
+    if keyboard.is_pressed("w") == True or keyboard.is_pressed("a") == True or keyboard.is_pressed("s") == True or keyboard.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
+        Bot.rainbowbrush()
     #these next two hotkeys are needed to set your square for random tree and among us drawing, first press Y for your top left corner, and then U for your bottom left corner
     #and then you can use R to draw random trees or K to draw random Among Us characters
-    if k.is_pressed("y"):
-        tX, tY = p.position()
-    if k.is_pressed("u"):
-        bX, bY = p.position()
-    if k.is_pressed("r"):#random tree, make sure your zoom is at 1 or won't scale correctly
+    if keyboard.is_pressed("y"):
+        tX, tY = autogui.position()
+    if keyboard.is_pressed("u"):
+        bX, bY = autogui.position()
+    if keyboard.is_pressed("r"):#random tree, make sure your zoom is at 1 or won't scale correctly
         while True:
-            if r.random() > 0.5:
-                z = 1
-            else:
-                z = -1
-            x = r.randrange(tX,bX)
-            y = r.randrange(tY,bY)
-            p.moveTo(x,y)
-            pixx = p.pixel(x+z, y+z)
-            pixx2 = p.pixel(x-z*4, y-5)
+            side = int(random.choice(["-1","1"]))
+            x = random.randrange(tX,bX)
+            y = random.randrange(tY,bY)
+            autogui.moveTo(x,y)
+            pixx = autogui.pixel(x+side, y+side)
+            pixx2 = autogui.pixel(x-side*4, y-5)
             if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
-                if r.random() > 0.75:
-                    try:
-                        tree_2()
-                    except:
-                        reload_colors()
+                if random.random() > 0.75:
+                    Bot.tree_2()
                 else:
-                    try:
-                        tree_1()
-                    except:
-                        reload_colors()
+                    Bot.tree_1()
             else:                
                 pass                
-            if k.is_pressed("j"):#hold down on J to end the random drawing
+            if keyboard.is_pressed("j"):#hold down on J to end the random drawing
                 break        
-    if k.is_pressed("k"):#random amongus, make sure your zoom is at 1 or won't scale correctly
+    if keyboard.is_pressed("k"):#random amongus, make sure your zoom is at 1 or won't scale correctly
         while True:
-            if r.random() > 0.5:
-                z = 1
-            else:
-                z = -1
-            x = r.randrange(tX,bX)
-            y = r.randrange(tY,bY)
-            p.moveTo(x,y)
-            pixx = p.pixel(x+z, y+z)
-            pixx2 = p.pixel(x-z*4, y-5)
+            side = int(random.choice(["-1","1"]))
+            x = random.randrange(tX,bX)
+            y = random.randrange(tY,bY)
+            autogui.moveTo(x,y)
+            pixx = autogui.pixel(x+side, y+side)
+            pixx2 = autogui.pixel(x-side*4, y-5)
             if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
-                try:
-                    mongus()
-                except:
-                    reload_colors()
+                Bot.mongus()
             else:                
                 pass                
-            if k.is_pressed("j"):#hold down on J to end the random drawing
+            if keyboard.is_pressed("j"):#hold down on J to end the random drawing
                 break
-    if k.is_pressed('esc'):#hold esc to halt the script in case of emergency, you will need to run the script again to use it again if you do this
-        m.unhook(mouse_handler)
+    if keyboard.is_pressed('esc'):#hold esc to halt the script in case of emergency, you will need to run the script again to use it again if you do this
+        mouse.unhook(mouse_handler)
         quit()
-        
 ### End Controls ##        
-m.hook(mouse_handler)### program starting now ###
+
+### program starting now ###
+Thing = Bot(crewmate.username,crewmate.password)
+print_Controls()
+mouse.hook(mouse_handler(Thing))
