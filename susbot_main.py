@@ -27,8 +27,8 @@ tX, bX, tY, bY = None, None, None, None
 #login sequence, using Reddit, set your username and pass for Reddit in crewmate.py's variables 'username' and 'password'
 print ('Logging in now through Reddit. If you get an error you may need to set your name and password in crewmate.py')
 driver.get("https://pixelplace.io/api/sso.php?type=2&action=login")
-driver.find_element_by_id('loginUsername').send_keys(crewmate.username)
-driver.find_element_by_id('loginPassword').send_keys(crewmate.password)
+driver.find_element(By.ID,'loginUsername').send_keys(crewmate.username)
+driver.find_element(By.ID,'loginPassword').send_keys(crewmate.password)
 driver.find_elements(By.XPATH,'/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4].click()
 failed = None
 while True:
@@ -96,19 +96,19 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     blue6 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[36]
     blue7 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[37]
     cyan = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[38] #premium cyan    
-    colorWTF = [green1, green2, green3, red2, red3, yellow3, yellow4, pink3, pink4, green4, orange, purple]  
+    colorWTF = [green1, green2, green3, red2, red3, yellow3, yellow4, pink3, pink4]  
     color8 = [white,grey1,grey2,grey3,grey4,black,green1,green2,
-        green3,green4,green5,yellow1,yellow2,yellow3,yellow4,
-        brown1,brown2,brown3,red1,red2,red3,orange,brown4,peach1,
-        peach2,peach3,pink1,pink2,pink3,pink4,purple,
-        blue1,blue2,blue3,blue4,blue5,blue6,blue7,cyan]    
-    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7,cyan]
+        green3,green5,yellow1,yellow2,yellow3,yellow4,
+        brown1,brown2,brown3,red1,red2,red3,brown4,peach1,
+        peach2,peach3,pink1,pink2,pink3,pink4,
+        blue1,blue2,blue3,blue4,blue5,blue6,blue7]    
+    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7]
     color6 = [black, white]
     color5 = [brown1, brown2, brown3, brown4, grey4, peach3, white]
     color4 = [brown1, brown2, brown3, brown4]
     color3 = [grey4, grey3, grey2, grey1]
     color2 = [yellow1, yellow2, yellow3, yellow4]
-    color1 = [green1, green2, green3, green4, green5]
+    color1 = [green1, green2, green3, green5]
     color0 = [red1, red2, red3]    
     #the list above is linked to the whichcolor() functions further below
     colors_cycleWTF = cycle(colorWTF)
@@ -525,7 +525,7 @@ def enable_guild_logos():
 def disable_css_borders():
     element = driver.find_element(By.XPATH,'//*[@id="placeholder"]')
     #print (element.value_of_css_property("border"))
-    driver.execute_script("arguments[0].style.border = '0px solid rgb(0, 0, 0)';",element)        
+    driver.execute_script("arguments[0].style.border = '/*1px solid rgb(0, 0, 0)*/';",element)        
 disable_css_borders()
     
 ### Controls Section ###
