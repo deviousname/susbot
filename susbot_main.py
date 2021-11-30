@@ -8,95 +8,110 @@ import random as r
 import mouse as m
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from itertools import cycle
-driver = webdriver.Chrome() #you need chromedriver.exe: https://chromedriver.chromium.org/downloads
+from googletrans import Translator
+import pyperclip
+translator = Translator()
 
+#chrome_options = Options()
+#chrome_options.add_extension('tamper.crx')
+#chrome_options.add_argument("--log-level=3")
+
+#driver = webdriver.Chrome(options=chrome_options) #you need chromedriver.exe: https://chromedriver.chromium.org/downloads
+driver = webdriver.Chrome()
 #some vars for later:
 z, vector = 1, 0
 thecolor = None
-tX, bX, tY, bY = None, None, None, None  
-
+tX, bX, tY, bY = None, None, None, None
 #login sequence, using Reddit, set your username and pass for Reddit in crewmate.py's variables 'username' and 'password'
 print ('Logging in now through Reddit. If you get an error you may need to set your name and password in crewmate.py')
 driver.get("https://pixelplace.io/api/sso.php?type=2&action=login")
 driver.find_element_by_id('loginUsername').send_keys(crewmate.username)
 driver.find_element_by_id('loginPassword').send_keys(crewmate.password)
-driver.find_elements_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4].click()
-
+driver.find_elements(By.XPATH,'/html/body/div/main/div[1]/div/div[2]/form/fieldset')[4].click()
 failed = None
 while True:
     try:
-        driver.find_elements_by_xpath('/html/body/div[3]/div/div[2]/form/div/input')[0].click()
+        driver.find_elements(By.XPATH,'/html/body/div[3]/div/div[2]/form/div/input')[0].click()
         failed = False
     except:
         failed = True
     if failed == False:
-        break
-    
+        break    
 print ('All done logging in, ready to paint.')
 #end login
-
 print ('-Controls-')
-print ('Q: Cycle through all colors.')
-print ('WASD: cycles different color palletes depending on which combination you use, for example W + A is yellows.')
-print ('E: Draw an Among Us character, make sure your zoom level is 1 on pixelplace. Note: it only works when you are moving your mouse cursor slighty when you press it.')
-print ('For random drawing, press Y on the top left of your zone, and U on the bottom left then use either R to draw random trees or K to draw random Among Us characters.')
-print ('J: hold J to stop drawing random trees or Among Us characters.')
-print ('ESC: hold Escape to halt the script.')
+print ('(you must move the mouse to use any control)')
+print ('q: Cycles through all colors.')
+print ('wasd: Cycles different color palletes depending on which combination you use, for example w + a is yellows.')
+print ('e: Color shift brush')
+print ("For random tree and mongus drawings, press y on the top left of your zone, and u on the bottom right then use either 'r' to draw random trees or 'k' to draw random Among Us characters.")
+print ("j: Hold 'j' to stop drawing random trees or mongus characters.")
+print ('x: Disables guild war emblems.')
+print ('v: Enables guild war emblems (after disabling with x).')
+print ('`: Translates the latest chat message in global chat into English (use at your own risk, you can break rules with what you say.')
+print (' F8 to pause and F9 to unpause the script')
+print ('ESC: Hold Escape to halt the script.')
 
 #setting up the colors for fast color switching:
 def reload_colors(): #in order for you to switch colors easily, these needed to be loaded properly
-    global white,grey1,grey2,grey3,grey4,black,green1,green2,green3,green5,yellow1,yellow2,yellow3,yellow4,brown1,brown2,brown3,red1,red2,red3,brown4,peach1,peach2,peach3,pink1,pink2,pink3,pink4,blue1,blue2,blue3,blue4,blue5,blue6,blue7, colors_all, color0,  color1, color2, color3, color4, color5, color6, color7, colors_cycle0, colors_cycle1, colors_cycle2, colors_cycle3, colors_cycle4, colors_cycle5, colors_cycle6, colors_cycle7, colors_cycle8
-    white = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[0]
-    grey1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[1]
-    grey2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[2]
-    grey3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[3]
-    grey4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[4]
-    black = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[5]
-    green1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[6]
-    green2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[7]
-    green3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[8]
-    green5 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[10]
-    yellow1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[11]
-    yellow2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[12]
-    yellow3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[13]
-    yellow4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[14]
-    brown1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[15]
-    brown2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[16]
-    brown3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[17]
-    red1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[18] 
-    red2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[19]
-    red3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[20]
-    brown4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[22]
-    peach1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[23]
-    peach2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[24]
-    peach3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[25]
-    pink1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[26]
-    pink2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[27]
-    pink3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[28]
-    pink4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[29]
-    blue1 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[31]
-    blue2 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[32]
-    blue3 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[33]
-    blue4 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[34]
-    blue5 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[35]
-    blue6 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[36]
-    blue7 = driver.find_elements_by_xpath('//*[@id="palette-buttons"]/a')[37]    
+    global white,grey1,grey2,grey3,grey4,black,green1,green2,green3,green5,yellow1,yellow2,yellow3,yellow4,brown1,brown2,brown3,red1,red2,red3,brown4,peach1,peach2,peach3,pink1,pink2,pink3,pink4,blue1,blue2,blue3,blue4,blue5,blue6,blue7, colors_all, color0,  color1, color2, color3, color4, color5, color6, color7, colors_cycle0, colors_cycle1, colors_cycle2, colors_cycle3, colors_cycle4, colors_cycle5, colors_cycle6, colors_cycle7, colors_cycle8, colors_cycleWTF, colors_cycle9
+    white = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[0]
+    grey1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[1]
+    grey2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[2]
+    grey3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[3]
+    grey4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[4]
+    black = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[5]
+    green1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[6]
+    green2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[7]
+    green3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[8]
+    green4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[9] #premium green
+    green5 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[10]
+    yellow1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[11]
+    yellow2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[12]
+    yellow3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[13]
+    yellow4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[14]
+    brown1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[15]
+    brown2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[16]
+    brown3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[17]
+    red1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[18] 
+    red2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[19]
+    red3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[20]
+    orange = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[21] #premium orange
+    brown4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[22]
+    peach1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[23]
+    peach2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[24]
+    peach3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[25]
+    pink1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[26]
+    pink2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[27]
+    pink3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[28]
+    pink4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[29]
+    purple = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[30] #premium purple
+    blue1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[31]
+    blue2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[32]
+    blue3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[33]
+    blue4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[34]
+    blue5 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[35]
+    blue6 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[36]
+    blue7 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[37]
+    cyan = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[38] #premium cyan    
+    colorWTF = [green1, green2, green3, red2, red3, yellow3, yellow4, pink3, pink4, green4, orange, purple]  
     color8 = [white,grey1,grey2,grey3,grey4,black,green1,green2,
-        green3,green5,yellow1,yellow2,yellow3,yellow4,
-        brown1,brown2,brown3,red1,red2,red3,brown4,peach1,
-        peach2,peach3,pink1,pink2,pink3,pink4,
-        blue1,blue2,blue3,blue4,blue5,blue6,blue7]
-    #if you want to add colors to your WASD palette, add the colors into the lists below: 
-    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7]
+        green3,green4,green5,yellow1,yellow2,yellow3,yellow4,
+        brown1,brown2,brown3,red1,red2,red3,orange,brown4,peach1,
+        peach2,peach3,pink1,pink2,pink3,pink4,purple,
+        blue1,blue2,blue3,blue4,blue5,blue6,blue7,cyan]    
+    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7,cyan]
     color6 = [black, white]
     color5 = [brown1, brown2, brown3, brown4, grey4, peach3, white]
     color4 = [brown1, brown2, brown3, brown4]
     color3 = [grey4, grey3, grey2, grey1]
     color2 = [yellow1, yellow2, yellow3, yellow4]
-    color1 = [green1, green2, green3, green5]
-    color0 = [red1, red2, red3]
+    color1 = [green1, green2, green3, green4, green5]
+    color0 = [red1, red2, red3]    
     #the list above is linked to the whichcolor() functions further below
+    colors_cycleWTF = cycle(colorWTF)
     colors_cycle8 = cycle(color8)
     colors_cycle7 = cycle(color7)
     colors_cycle6 = cycle(color6)
@@ -105,54 +120,53 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     colors_cycle3 = cycle(color3)
     colors_cycle2 = cycle(color2)
     colors_cycle1 = cycle(color1)
-    colors_cycle0 = cycle(color0)  
+    colors_cycle0 = cycle(color0)
 reload_colors()
-
+#parent = driver.window_handles[0]
+#chld = driver.window_handles[1]
+#driver.switch_to.window(chld)
+#driver.close()
+#driver.switch_to.window(parent)
+def whichcolorWTF(): # Autumn leave colors
+    global thecolor
+    thecolor = next(colors_cycleWTF)
+    thecolor.click()    
 def whichcolor8(): # All colors
     global thecolor
     thecolor = next(colors_cycle8)
     thecolor.click() 
-
 def whichcolor7(): # Blue colors
     global thecolor
     thecolor = next(colors_cycle7)
     thecolor.click()
-
 def whichcolor6(): # Black and white
     global thecolor
     thecolor = next(colors_cycle6)
-    thecolor.click()    
-
+    thecolor.click()  
 def whichcolor5(): # Tree trunk colors
     global thecolor
     thecolor = next(colors_cycle5)
-    thecolor.click()    
-
+    thecolor.click()  
 def whichcolor4(): # Brown colors
     global thecolor
     thecolor = next(colors_cycle4)
-    thecolor.click()    
-
+    thecolor.click() 
 def whichcolor3(): # Grey colors
     global thecolor
     thecolor = next(colors_cycle3)
-    thecolor.click()    
-
+    thecolor.click()   
 def whichcolor2(): # Yellow colors
     global thecolor
     thecolor = next(colors_cycle2)
-    thecolor.click()    
-
+    thecolor.click()   
 def whichcolor1(): # Green colors
     global thecolor
     thecolor = next(colors_cycle1)
     thecolor.click()    
-
 def whichcolor0(): # Red colors
     global thecolor
     thecolor = next(colors_cycle0)
     thecolor.click()
-
 def rainbowbrush(): #this is how the key combos work, for example if you press A and W it will run whichcolor2() aka the yellow colors
     if k.is_pressed("s") == True or k.is_pressed("a") == True or k.is_pressed("w") == True or k.is_pressed("d") == True:        
         #only A
@@ -175,19 +189,18 @@ def rainbowbrush(): #this is how the key combos work, for example if you press A
             whichcolor5()
         #only DS
         if k.is_pressed("d") == True and k.is_pressed("s") == True and k.is_pressed("a") != True and k.is_pressed("w") != True:
-            whichcolor6()
+            try:
+                whichcolorWTF()
+            except Exception as e:
+                print(e)
         #only SA
         if k.is_pressed("s") == True and k.is_pressed("a") == True and k.is_pressed("d") != True and k.is_pressed("w") != True:
-            whichcolor7()
-            
-vectors = [1,2,3,4];vector_cycle = cycle(vectors)
-def vectoring():
-    global vector #for use in direction of trees, among other things
-    vector = next(vector_cycle)
-        
+            whichcolor7()            
+
+
 def colorshift(): # this function is still a work in progress and you can set it in the controls, tree leafs are a good use for this, it paints the next color on the list after checking which color is under your mouse cursor
-    global thecolor, pixy, z, x, y  
-    pixy = p.pixel(x + z, y - z) #check nearby pixel color
+    global thecolor, pixy, x, y  
+    pixy = p.pixel(x, y) #check nearby pixel color
     if pixy == (255,255,255): # paints the next color on the list based on the color it sees
         thecolor = grey1        
     elif pixy == (196,196,196):
@@ -261,7 +274,7 @@ def colorshift(): # this function is still a work in progress and you can set it
     else:
         pass        
     thecolor.click() #once it knows what color to click, clicks it
-    
+
 def tree_2(): #palm tree
     global z, x, y, vector, thecolor # x, y for coords, z is for facing direction
     #lets get a vector variable for later
@@ -311,8 +324,7 @@ def tree_2(): #palm tree
     p.moveTo(x-z,y-2)
     p.moveTo(x+z,y-2)
     k.release('space')
-    z = -z #invert z so the next tree faces the opposite direction
-    
+    z = -z #invert z so the next tree faces the opposite direction    
 def tree_1(): #normal style tree that using every color for the leaves based on colorshift()
     global z, x, y, vector, thecolor
     vectoring()
@@ -327,7 +339,8 @@ def tree_1(): #normal style tree that using every color for the leaves based on 
             p.moveTo(x,y)
             y-=1
     p.moveTo(x, y)
-    colorshift() #leaf color, you can use whichcolor1() here for example or the other whichcolor() functions to change which color the leaves will be
+    #colorshift()
+    whichcolorWTF() #leaf color, you can use whichcolor1() here for example
     p.moveTo(x-z,y)
     p.moveTo(x+z,y)
     p.moveTo(x,y-1)
@@ -340,11 +353,11 @@ def tree_1(): #normal style tree that using every color for the leaves based on 
         p.moveTo(x-z,y)
         p.moveTo(x+z,y)
         p.moveTo(x,y-1)
-    k.release('space')
-    
+    k.release('space')    
 def mongus(): #draw an among us character
     global z, thecolor, x, y
     whichcolor8()
+    #    grey1.click()    
     p.moveTo(x,y)
     k.press('space')
     for _ in range(2):
@@ -373,7 +386,147 @@ def mongus(): #draw an among us character
     p.moveTo(x-z,y)
     p.moveTo(x-z,y)
     k.release('space')
-    z = -z #next amongus will face other direction if you invert z
+    z = -z #next amongus will face other direction with inverted z
+    
+vectors = [1,2,3,4];vector_cycle = cycle(vectors)
+def vectoring():
+    global vector #for use in direction of trees, among other things
+    vector = next(vector_cycle)
+ 
+def spiral():
+    global x, y, vector
+    growth = 1
+    k.press("space")
+    while True:
+        if k.is_pressed("j"):
+                break
+        vectoring()
+        for _ in range(growth):
+            colorshift()
+            if vector == 1:
+                p.moveRel(1,0)
+            if vector == 2:
+                p.moveRel(0,1)
+            if vector == 3:
+                p.moveRel(-1,0)
+            if vector == 4:
+                p.moveRel(0,-1)
+            if k.is_pressed("j"):
+                break
+        growth += 1
+    k.release("space")
+
+
+def get_chat_log(): #normally bound to E this will translate the lastest chat message
+    text = driver.find_element(By.XPATH, '//*[@id="chat"]/div[3]/div[50]/span[2]').text
+    text = translator.translate(text)
+    text2 = text.text
+    print (text2)
+    chatbox = driver.find_element_by_name('chat')
+    k.press_and_release('enter')
+    chatbox.send_keys(text2)
+    k.press_and_release('enter')
+
+def disable_guild_logos():
+    try:
+        element0 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[0]')
+        driver.execute_script("arguments[0].style.display = 'none';",element0)
+    except Exception:
+        pass
+    try:
+        element1 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[1]')
+        driver.execute_script("arguments[0].style.display = 'none';",element1)
+    except Exception:
+        pass
+    try:
+        element2 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[2]')
+        driver.execute_script("arguments[0].style.display = 'none';",element2)
+    except Exception:
+        pass
+    try:
+        element3 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[3]')
+        driver.execute_script("arguments[0].style.display = 'none';",element3)
+    except Exception:
+        pass
+    try:
+        element4 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[4]')
+        driver.execute_script("arguments[0].style.display = 'none';",element4)
+    except Exception:
+        pass
+    try:
+        element5 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[5]')
+        driver.execute_script("arguments[0].style.display = 'none';",element5)
+    except Exception:
+        pass
+    try:
+        element6 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[6]')
+        driver.execute_script("arguments[0].style.display = 'none';",element6)
+    except Exception:
+        pass
+    try:
+        element7 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[7]')
+        driver.execute_script("arguments[0].style.display = 'none';",element7)
+    except Exception:
+        pass
+    try:
+        element8 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[8]')
+        driver.execute_script("arguments[0].style.display = 'none';",element8)
+    except Exception:
+        pass
+
+def enable_guild_logos():
+    try:
+        element0 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[0]')
+        driver.execute_script("arguments[0].style.display = 'block';",element0)
+    except Exception:
+        pass
+    try:
+        element1 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[1]')
+        driver.execute_script("arguments[0].style.display = 'block';",element1)
+    except Exception:
+        pass
+    try:
+        element2 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[2]')
+        driver.execute_script("arguments[0].style.display = 'block';",element2)
+    except Exception:
+        pass
+    try:
+        element3 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[3]')
+        driver.execute_script("arguments[0].style.display = 'block';",element3)
+    except Exception:
+        pass
+    try:
+        element4 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[4]')
+        driver.execute_script("arguments[0].style.display = 'block';",element4)
+    except Exception:
+        pass
+    try:
+        element5 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[5]')
+        driver.execute_script("arguments[0].style.display = 'block';",element5)
+    except Exception:
+        pass
+    try:
+        element6 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[6]')
+        driver.execute_script("arguments[0].style.display = 'block';",element6)
+    except Exception:
+        pass
+    try:
+        element7 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[7]')
+        driver.execute_script("arguments[0].style.display = 'block';",element7)
+    except Exception:
+        pass
+    try:
+        element8 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[8]')
+        driver.execute_script("arguments[0].style.display = 'block';",element8)
+    except Exception:
+        pass
+        
+
+def disable_css_borders():
+    element = driver.find_element(By.XPATH,'//*[@id="placeholder"]')
+    #print (element.value_of_css_property("border"))
+    driver.execute_script("arguments[0].style.border = '0px solid rgb(0, 0, 0)';",element)        
+disable_css_borders()
     
 ### Controls Section ###
 def mouse_handler(event):
@@ -385,10 +538,17 @@ def mouse_handler(event):
         except:
             reload_colors()
     if k.is_pressed("e"):
+        colorshift()
+    if k.is_pressed("x"):
+        disable_guild_logos()
+    if k.is_pressed("v"):
+        enable_guild_logos()
+    
+    if k.is_pressed("`"):
         try:
-            mongus()
-        except:
-            reload_colors()
+            get_chat_log()
+        except Exception as e:
+            print(e)   
     if k.is_pressed("w") == True or k.is_pressed("a") == True or k.is_pressed("s") == True or k.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
         try:
             rainbowbrush()
@@ -411,7 +571,7 @@ def mouse_handler(event):
             p.moveTo(x,y)
             pixx = p.pixel(x+z, y+z)
             pixx2 = p.pixel(x-z*4, y-5)
-            if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
+            if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean 196,196,196
                 if r.random() > 0.75:
                     try:
                         tree_2()
@@ -425,7 +585,19 @@ def mouse_handler(event):
             else:                
                 pass                
             if k.is_pressed("j"):#hold down on J to end the random drawing
-                break        
+                break
+    if k.is_pressed("z"):
+        #lets go to https://pixelplace.io/7-pixels-world-war
+        #but ideally we just want to set the zoom to 1
+        pass
+
+    if k.is_pressed("f8"):
+        print("paused")
+        while True:
+            t.sleep(1)
+            if k.is_pressed("f9"):
+                print("unpaused")
+                break
     if k.is_pressed("k"):#random amongus, make sure your zoom is at 1 or won't scale correctly
         while True:
             if r.random() > 0.5:
@@ -437,7 +609,8 @@ def mouse_handler(event):
             p.moveTo(x,y)
             pixx = p.pixel(x+z, y+z)
             pixx2 = p.pixel(x-z*4, y-5)
-            if pixx != (204,204,204) and pixx2 != (204,204,204): #makes sure you aren't trying to start your drawing on the ocean
+            if pixx != (204,204,204) and pixx2 != (204,204,204):
+            #if pixx != (204,204,204) and pixx != (196,196,196) and pixx2 != (204,204,204) and pixx2 != (196,196,196): #makes sure you aren't trying to start your drawing on the ocean
                 try:
                     mongus()
                 except:
@@ -448,7 +621,6 @@ def mouse_handler(event):
                 break
     if k.is_pressed('esc'):#hold esc to halt the script in case of emergency, you will need to run the script again to use it again if you do this
         m.unhook(mouse_handler)
-        quit()
-        
+        quit()        
 ### End Controls ##        
 m.hook(mouse_handler)### program starting now ###
