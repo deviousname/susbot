@@ -8,15 +8,13 @@ https://www.python.org/downloads/release/python-379/
 
 If you do not have a Reddit account, you will need one in order to use susbot, otherwise you will need to rewrite the code to suit your non-Reddit needs.
 
-If you use Chrome, you need to find the matching chromedriver.exe (I included the latest chromedriver.exe)
+Chrome is required, but Firefox can work with some small code changes if you know what you are doing (you need geckodriver.exe instead of chromedriver.exe)
 
 chromedriver can be found here:  https://chromedriver.chromium.org/downloads
 
 To run it: right click on susbot_main.py and open with IDLE then press F5 to run. Doubleclicking the file does not work.
 
 Set your Reddit name and password in crewmate.py and then run susbotmain.py
-
-Note: while it is logging in don't click around or do anything, just wait for pixeplace.io to fully load in, and then you can use it.
 
 IMPORTANT: All the imports need to be installed, if you don't know how to do that, I reccomend looking up how pip install for Windows 10 Python 3.7.9 which is what I use.
 
@@ -26,18 +24,26 @@ Different system setups may have different syntax, good luck!
 
 The full list of imports you need to install are:
 
-pyautogui
+pyautogui: pip install pyautogui
 
 (https://pyautogui.readthedocs.io/en/latest/)
 
-keyboard
+keyboard: pip install keyboard
 
 (https://pypi.org/project/keyboard/)
 
-mouse
+mouse: pip install mouse
 
 (https://pypi.org/project/mouse/)
 
-selenium
+selenium: pip install selenium
 
 (https://selenium-python.readthedocs.io/)
+
+googletrans: pip install googletrans
+
+(https://pypi.org/project/googletrans/)
+
+pyperclip: pip install pyperclip
+
+(https://pypi.org/project/pyperclip/)
