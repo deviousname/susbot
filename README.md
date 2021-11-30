@@ -20,7 +20,7 @@ IMPORTANT: All the imports need to be installed, if you don't know how to do tha
 
 For example to install pyautogui you open your command prompt and type: pip install pyautogui
 
-Different system setups may have different syntax, good luck!
+Different system setups may have different syntax, good luck! For example: python3 -m pip install pyautogui
 
 The full list of imports you need to install are:
 
