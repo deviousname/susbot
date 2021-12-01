@@ -11,7 +11,7 @@ import keyboard
 import mouse
 import pyautogui as autogui
 
-class Bot(): 
+class BotClass(): 
     def __init__ (self,username,password):
         self.username = username
         self.password = password    
@@ -221,7 +221,8 @@ def print_Controls():
     
 
 ### Controls Section ###
-def mouse_handler(Bot):
+def mouse_handler():
+    Bot = BotClass(crewmate.username,crewmate.password)
     x, y = autogui.position()
     if keyboard.is_pressed("q"):
         next(Bot.Colors_ALL).click
@@ -272,6 +273,5 @@ def mouse_handler(Bot):
 ### End Controls ##        
 
 ### program starting now ###
-Thing = Bot(crewmate.username,crewmate.password)
 print_Controls()
-mouse.hook(mouse_handler(Thing))
+mouse.hook(mouse_handler(mouse_handler))
