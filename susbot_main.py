@@ -274,4 +274,4 @@ def mouse_handler():
 
 ### program starting now ###
 print_Controls()
-mouse.hook(mouse_handler(mouse_handler))
+mouse.hook(mouse_handler)
