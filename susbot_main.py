@@ -96,19 +96,19 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     blue6 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[36]
     blue7 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[37]
     cyan = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[38] #premium cyan    
-    colorWTF = [green1, green2, green3, red2, red3, yellow3, yellow4, pink3, pink4]  
+    colorWTF = [green1, green2, green3, red2, red3, yellow3, yellow4, pink3, pink4, green4, orange, purple]  
     color8 = [white,grey1,grey2,grey3,grey4,black,green1,green2,
-        green3,green5,yellow1,yellow2,yellow3,yellow4,
-        brown1,brown2,brown3,red1,red2,red3,brown4,peach1,
-        peach2,peach3,pink1,pink2,pink3,pink4,
-        blue1,blue2,blue3,blue4,blue5,blue6,blue7]    
-    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7]
+        green3,green4,green5,yellow1,yellow2,yellow3,yellow4,
+        brown1,brown2,brown3,red1,red2,red3,orange,brown4,peach1,
+        peach2,peach3,pink1,pink2,pink3,pink4,purple,
+        blue1,blue2,blue3,blue4,blue5,blue6,blue7,cyan]    
+    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7,cyan]
     color6 = [black, white]
     color5 = [brown1, brown2, brown3, brown4, grey4, peach3, white]
     color4 = [brown1, brown2, brown3, brown4]
     color3 = [grey4, grey3, grey2, grey1]
     color2 = [yellow1, yellow2, yellow3, yellow4]
-    color1 = [green1, green2, green3, green5]
+    color1 = [green1, green2, green3, green4, green5]
     color0 = [red1, red2, red3]    
     #the list above is linked to the whichcolor() functions further below
     colors_cycleWTF = cycle(colorWTF)
@@ -402,7 +402,7 @@ def spiral():
                 break
         vectoring()
         for _ in range(growth):
-            colorshift()
+            whichcolor8()
             if vector == 1:
                 p.moveRel(1,0)
             if vector == 2:
@@ -418,15 +418,25 @@ def spiral():
 
 
 def get_chat_log(): #normally bound to E this will translate the lastest chat message
+    bad_chars = ['@']
     text = driver.find_element(By.XPATH, '//*[@id="chat"]/div[3]/div[50]/span[2]').text
     text = translator.translate(text)
+    string1 = '^ "'
     text2 = text.text
-    print (text2)
+    string3 = '"'
+    text3 = string1 + text2 + string3
+    for i in bad_chars:
+        text3 = text3.replace(i, '')
+    print (text3)
     chatbox = driver.find_element_by_name('chat')
-    k.press_and_release('enter')
-    chatbox.send_keys(text2)
+    k.press_and_release('enter')    
+    chatbox.send_keys(text3)
     k.press_and_release('enter')
 
+def testchatchange():
+    chat_element = driver.find_element(By.XPATH, '//*[@id="chat"]/div[3]/div[50]/span[2]')
+    driver.execute_script("arguments[0].style.text = 'testing 123';",chat_element)
+    
 def disable_guild_logos():
     try:
         element0 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[0]')
@@ -527,11 +537,32 @@ def disable_css_borders():
     #print (element.value_of_css_property("border"))
     driver.execute_script("arguments[0].style.border = '/*1px solid rgb(0, 0, 0)*/';",element)        
 disable_css_borders()
+
+def track_player():
+    t.sleep(1)
+    try:
+        tracked_player = driver.find_element(By.CSS_SELECTOR,'#painting-move > *[data-profile="susbot"]')
+        #print ('found player')
+        #print (tracked_player.value_of_css_property("top"))
+        #print (tracked_player.value_of_css_property("left"))
+    except Exception as e:
+        print (e)
+        pass
+
+def put_pixel():
+    PIXEL = driver.find_element(By.XPATH, '//*[@id="cursor"]')
+    driver.execute_script("arguments[0].style.background-color = 'rgb(0, 0, 0)'; top = '100px'; left = '100px';",PIXEL)
+    
+
     
 ### Controls Section ###
 def mouse_handler(event):
     global x, y, z, tX, tY, bX, bY, pixx, pixx2
     x, y = p.position()
+    """
+    if k.is_pressed(","):
+        testchatchange()
+    """
     if k.is_pressed("q"):
         try:
             whichcolor8()
@@ -590,7 +621,8 @@ def mouse_handler(event):
         #lets go to https://pixelplace.io/7-pixels-world-war
         #but ideally we just want to set the zoom to 1
         pass
-
+    if k.is_pressed("n"):
+        spiral()
     if k.is_pressed("f8"):
         print("paused")
         while True:
