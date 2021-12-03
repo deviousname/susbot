@@ -389,7 +389,7 @@ def mongus(): #draw an among us character
     
 vectors = [1,2,3,4];vector_cycle = cycle(vectors)
 def vectoring():
-    global vector #for use in direction of trees, among other things
+    global vector #for use in direction of trees, spirals, among other things
     vector = next(vector_cycle)
  
 def spiral():
@@ -416,7 +416,7 @@ def spiral():
     k.release("space")
 
 
-def get_chat_log(): #normally bound to E this will translate the lastest chat message
+def translate(): #normally bound to E this will translate the lastest chat message
     bad_chars = ['@']
     text = driver.find_element(By.XPATH, '//*[@id="chat"]/div[3]/div[50]/span[2]').text
     text = translator.translate(text)
@@ -431,11 +431,11 @@ def get_chat_log(): #normally bound to E this will translate the lastest chat me
     k.press_and_release('enter')    
     chatbox.send_keys(text3)
     k.press_and_release('enter')
-
-def testchatchange():
+"""
+def testchatchange():#work in progress
     chat_element = driver.find_element(By.XPATH, '//*[@id="chat"]/div[3]/div[50]/span[2]')
     driver.execute_script("arguments[0].style.text = 'testing 123';",chat_element)
-    
+"""    
 def disable_guild_logos():
     try:
         element0 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[0]')
@@ -536,7 +536,7 @@ def disable_css_borders():
     #print (element.value_of_css_property("border"))
     driver.execute_script("arguments[0].style.border = '/*1px solid rgb(0, 0, 0)*/';",element)        
 disable_css_borders()
-
+"""
 def track_player():
     t.sleep(1)
     try:
@@ -547,21 +547,13 @@ def track_player():
     except Exception as e:
         print (e)
         pass
-
-def put_pixel():
-    PIXEL = driver.find_element(By.XPATH, '//*[@id="cursor"]')
-    driver.execute_script("arguments[0].style.background-color = 'rgb(0, 0, 0)'; top = '100px'; left = '100px';",PIXEL)
-    
+"""   
 
     
 ### Controls Section ###
 def mouse_handler(event):
     global x, y, z, tX, tY, bX, bY, pixx, pixx2
     x, y = p.position()
-    """
-    if k.is_pressed(","):
-        testchatchange()
-    """
     if k.is_pressed("q"):
         try:
             whichcolor8()
@@ -572,11 +564,10 @@ def mouse_handler(event):
     if k.is_pressed("x"):
         disable_guild_logos()
     if k.is_pressed("v"):
-        enable_guild_logos()
-    
+        enable_guild_logos()    
     if k.is_pressed("`"):
         try:
-            get_chat_log()
+            translate()
         except Exception as e:
             print(e)   
     if k.is_pressed("w") == True or k.is_pressed("a") == True or k.is_pressed("s") == True or k.is_pressed("d") == True: #this activates on any combination of WASD and is how you change colors fast
