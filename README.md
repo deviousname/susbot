@@ -43,7 +43,3 @@ selenium: pip install selenium
 googletrans: pip install googletrans
 
 (https://pypi.org/project/googletrans/)
-
-pyperclip: pip install pyperclip
-
-(https://pypi.org/project/pyperclip/)
