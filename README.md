@@ -43,3 +43,7 @@ selenium: pip install selenium
 googletrans: pip install googletrans
 
 (https://pypi.org/project/googletrans/)
+
+better_profanity: pip install better_profanity
+
+(https://pypi.org/project/better-profanity/)
