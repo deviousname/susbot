@@ -6,6 +6,7 @@ import keyboard as k
 import time as t
 import random as r
 import mouse as m
+from better_profanity import profanity
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -420,22 +421,18 @@ def translate(): #normally bound to E this will translate the lastest chat messa
     bad_chars = ['@']
     text = driver.find_element(By.XPATH, '//*[@id="chat"]/div[3]/div[50]/span[2]').text
     text = translator.translate(text)
-    string1 = '^ "'
-    text2 = text.text
-    string3 = '"'
-    text3 = string1 + text2 + string3
+    text = text.text
+    text = profanity.censor(text)
+    string1 = '^ "'    
+    string2 = '"'
+    text = string1 + text + string2
     for i in bad_chars:
-        text3 = text3.replace(i, '')
-    print (text3)
+        text = text.replace(i, '')    
     chatbox = driver.find_element_by_name('chat')
     k.press_and_release('enter')    
-    chatbox.send_keys(text3)
+    chatbox.send_keys(text)
     k.press_and_release('enter')
-"""
-def testchatchange():#work in progress
-    chat_element = driver.find_element(By.XPATH, '//*[@id="chat"]/div[3]/div[50]/span[2]')
-    driver.execute_script("arguments[0].style.text = 'testing 123';",chat_element)
-"""    
+    
 def disable_guild_logos():
     try:
         element0 = driver.find_element(By.XPATH,'//*[@id="areas"]/div[0]')
