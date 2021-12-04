@@ -65,7 +65,7 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     green1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[6]
     green2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[7]
     green3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[8]
-    green4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[9] #premium green
+    #green4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[9] #premium green
     green5 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[10]
     yellow1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[11]
     yellow2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[12]
@@ -77,7 +77,7 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     red1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[18] 
     red2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[19]
     red3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[20]
-    orange = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[21] #premium orange
+    #orange = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[21] #premium orange
     brown4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[22]
     peach1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[23]
     peach2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[24]
@@ -86,7 +86,7 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     pink2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[27]
     pink3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[28]
     pink4 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[29]
-    purple = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[30] #premium purple
+    #purple = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[30] #premium purple
     blue1 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[31]
     blue2 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[32]
     blue3 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[33]
@@ -94,20 +94,20 @@ def reload_colors(): #in order for you to switch colors easily, these needed to 
     blue5 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[35]
     blue6 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[36]
     blue7 = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[37]
-    cyan = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[38] #premium cyan    
-    colorWTF = [green1, green2, green3, red2, red3, yellow3, yellow4, pink3, pink4, green4, orange, purple]  
+    #cyan = driver.find_elements(By.XPATH,'//*[@id="palette-buttons"]/a')[38] #premium cyan    
+    colorWTF = [green1, green2, green3, red2, red3, yellow3, yellow4, pink3, pink4]  
     color8 = [white,grey1,grey2,grey3,grey4,black,green1,green2,
-        green3,green4,green5,yellow1,yellow2,yellow3,yellow4,
-        brown1,brown2,brown3,red1,red2,red3,orange,brown4,peach1,
-        peach2,peach3,pink1,pink2,pink3,pink4,purple,
-        blue1,blue2,blue3,blue4,blue5,blue6,blue7,cyan]    
-    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7,cyan]
+        green3,green5,yellow1,yellow2,yellow3,yellow4,
+        brown1,brown2,brown3,red1,red2,red3,brown4,peach1,
+        peach2,peach3,pink1,pink2,pink3,pink4,
+        blue1,blue2,blue3,blue4,blue5,blue6,blue7]    
+    color7 = [blue1,blue2,blue3,blue4,blue5,blue6,blue7]
     color6 = [black, white]
     color5 = [brown1, brown2, brown3, brown4, grey4, peach3, white]
     color4 = [brown1, brown2, brown3, brown4]
     color3 = [grey4, grey3, grey2, grey1]
     color2 = [yellow1, yellow2, yellow3, yellow4]
-    color1 = [green1, green2, green3, green4, green5]
+    color1 = [green1, green2, green3, green5]
     color0 = [red1, red2, red3]    
     #the list above is linked to the whichcolor() functions further below
     colors_cycleWTF = cycle(colorWTF)
