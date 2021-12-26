@@ -584,8 +584,16 @@ def mouse_handler(event):
                 z = 1
             else:
                 z = -1
-            x = r.randrange(tX,bX)
-            y = r.randrange(tY,bY)
+                
+            try:
+                x = r.randrange(tX,bX)
+            except:
+                tX,bX = bX,tX
+            try:
+                y = r.randrange(tY,bY)
+            except:
+                tY,bY = bY, tY
+                
             p.moveTo(x,y)
             pixx = p.pixel(x+z, y+z)
             pixx2 = p.pixel(x-z*4, y-5)
@@ -623,8 +631,16 @@ def mouse_handler(event):
                 z = 1
             else:
                 z = -1
-            x = r.randrange(tX,bX)
-            y = r.randrange(tY,bY)
+                
+            try:
+                x = r.randrange(tX,bX)
+            except:
+                tX,bX = bX,tX
+            try:
+                y = r.randrange(tY,bY)
+            except:
+                tY,bY = bY, tY
+                
             p.moveTo(x,y)
             pixx = p.pixel(x+z, y+z)
             pixx2 = p.pixel(x-z*4, y-5)
